@@ -1,0 +1,61 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"t9d9N10HLK\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Festa</span>\",\"col\":12}},{\"id\":\"2-lzG0kfCJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create New Events\",\"col\":4}},{\"id\":\"Dax1Z7wK_t\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Events\",\"col\":4}},{\"id\":\"EuYCQZL5JN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Hosts\",\"col\":4}},{\"id\":\"ewcxEvn89P\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PEPEVX1Xka\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Events this Month\",\"col\":4}}]",
+ "creation": "2025-09-24 18:11:39.114187",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "calendar",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "vyshuwa Festa",
+ "links": [],
+ "modified": "2025-09-24 18:21:18.930698",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "vyshuwa Festa",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Festa Event",
+   "label": "Events this Month",
+   "quick_list_filter": "[[\"Festa Event\",\"start_date\",\"Timespan\",\"this month\",false]]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 28.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create New Events",
+   "link_to": "Festa Event",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Cyan",
+   "doc_view": "List",
+   "label": "Hosts",
+   "link_to": "Festa Host",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{} Published",
+   "label": "Events",
+   "link_to": "Festa Event",
+   "stats_filter": "[[\"Festa Event\",\"is_published\",\"=\",1,false]]",
+   "type": "DocType"
+  }
+ ],
+ "title": "vyshuwa Festa"
+}

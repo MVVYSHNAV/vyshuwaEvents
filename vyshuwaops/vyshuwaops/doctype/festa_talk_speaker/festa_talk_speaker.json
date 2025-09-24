@@ -1,0 +1,42 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-24 17:02:02.361531",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "speaker",
+  "social_media_links"
+ ],
+ "fields": [
+  {
+   "fieldname": "speaker",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Speaker",
+   "options": "Festa Speaker Profile",
+   "reqd": 1
+  },
+  {
+   "fieldname": "social_media_links",
+   "fieldtype": "Table",
+   "label": "Social Media Links",
+   "options": "Festa Social Meida Link"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-09-24 18:00:34.809989",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Festa Talk Speaker",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

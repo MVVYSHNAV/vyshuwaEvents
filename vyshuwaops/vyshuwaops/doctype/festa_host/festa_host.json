@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "prompt",
+ "creation": "2025-09-24 13:03:20.663653",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "logo",
+  "country",
+  "table_mztv",
+  "column_break_rfdb",
+  "host_type",
+  "address",
+  "section_break_wqji",
+  "bio"
+ ],
+ "fields": [
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "default": "Individual",
+   "fieldname": "host_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Host Type",
+   "options": "Individual\nCompany/Organization\nNon-Profit\nCommunity Group",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_rfdb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_wqji",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "bio",
+   "fieldtype": "Text Editor",
+   "label": "Bio"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "table_mztv",
+   "fieldtype": "Table",
+   "label": "Social Media Link",
+   "options": "Festa Social Meida Link"
+  }
+ ],
+ "grid_page_length": 50,
+ "image_field": "logo",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-09-24 18:04:00.024182",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Festa Host",
+ "naming_rule": "Set by user",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
