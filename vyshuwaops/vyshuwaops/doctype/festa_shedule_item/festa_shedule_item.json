@@ -1,0 +1,83 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-24 17:10:20.966437",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "track",
+  "type",
+  "description",
+  "column_break_qlti",
+  "talk",
+  "start_time",
+  "end_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "Talk\nBreak",
+   "reqd": 1
+  },
+  {
+   "fieldname": "talk",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Talk",
+   "mandatory_depends_on": "eval:doc.type===\"Talk\"",
+   "options": "Festa Talk"
+  },
+  {
+   "fieldname": "track",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Track",
+   "options": "Festa Track",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_qlti",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Start Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "End Time",
+   "reqd": 1
+  },
+  {
+   "description": "Tea Break, Lucnh Break",
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Description",
+   "mandatory_depends_on": "eval:doc.type!==\"Talk\""
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-09-24 17:49:18.345070",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Festa Shedule Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
