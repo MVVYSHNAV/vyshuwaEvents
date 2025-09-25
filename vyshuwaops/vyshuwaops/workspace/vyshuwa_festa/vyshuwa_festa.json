@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"t9d9N10HLK\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Festa</span>\",\"col\":12}},{\"id\":\"2-lzG0kfCJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create New Events\",\"col\":4}},{\"id\":\"Dax1Z7wK_t\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Events\",\"col\":4}},{\"id\":\"EuYCQZL5JN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Hosts\",\"col\":4}},{\"id\":\"ewcxEvn89P\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PEPEVX1Xka\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Events this Month\",\"col\":4}}]",
+ "content": "[{\"id\":\"t9d9N10HLK\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Festa</span>\",\"col\":12}},{\"id\":\"2-lzG0kfCJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create New Events\",\"col\":4}},{\"id\":\"Dax1Z7wK_t\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Events\",\"col\":4}},{\"id\":\"EuYCQZL5JN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Hosts\",\"col\":4}},{\"id\":\"ewcxEvn89P\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PEPEVX1Xka\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Events this Month\",\"col\":4}},{\"id\":\"L5sM4lEsaD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Booking\",\"col\":3}},{\"id\":\"kISCLpkzlH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Ticket\",\"col\":3}},{\"id\":\"1OHuMezk-2\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
  "creation": "2025-09-24 18:11:39.114187",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "vyshuwa Festa",
  "links": [],
- "modified": "2025-09-24 18:21:18.930698",
+ "modified": "2025-09-25 10:50:17.525058",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "vyshuwa Festa",
@@ -50,10 +50,26 @@
   {
    "color": "Green",
    "doc_view": "List",
+   "label": "Booking",
+   "link_to": "Festa Booking",
+   "stats_filter": "[[\"Festa Booking\",\"docstatus\",\"=\",\"1\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
    "format": "{} Published",
    "label": "Events",
    "link_to": "Festa Event",
    "stats_filter": "[[\"Festa Event\",\"is_published\",\"=\",1,false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "List",
+   "label": "Ticket",
+   "link_to": "Festa Ticket",
+   "stats_filter": "[]",
    "type": "DocType"
   }
  ],

@@ -1,0 +1,129 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-24 20:40:17.287684",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_rvck",
+  "event",
+  "column_break_fofu",
+  "user",
+  "section_break_uamv",
+  "attendes",
+  "section_break_fwzv",
+  "total_amount",
+  "column_break_dlgu",
+  "currency",
+  "section_break_ecia",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_rvck",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Festa Booking",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_uamv",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Event",
+   "options": "Festa Event",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_ecia",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_fofu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_fwzv",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "default": "INR",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "column_break_dlgu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "attendes",
+   "fieldtype": "Table",
+   "label": "Attendes",
+   "options": "Festa Attende Booking"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "link_doctype": "Festa Ticket",
+   "link_fieldname": "booking"
+  }
+ ],
+ "modified": "2025-09-24 22:57:54.698107",
+ "modified_by": "Administrator",
+ "module": "Ticketing",
+ "name": "Festa Booking",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "event,total_amount",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "user"
+}
