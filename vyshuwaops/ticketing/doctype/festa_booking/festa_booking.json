@@ -99,13 +99,14 @@
    "link_fieldname": "booking"
   }
  ],
- "modified": "2025-09-25 16:22:06.939972",
+ "modified": "2025-09-25 18:25:13.786602",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Booking",
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -120,6 +121,7 @@
    "write": 1
   },
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -134,6 +136,7 @@
    "write": 1
   },
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,

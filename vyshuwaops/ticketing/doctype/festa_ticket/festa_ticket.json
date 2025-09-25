@@ -1,12 +1,13 @@
 {
  "actions": [],
- "autoname": "autoincrement",
+ "allow_rename": 1,
+ "autoname": "field:attende_name",
  "creation": "2025-09-24 21:47:57.218811",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "ticket_id",
   "attende_name",
+  "ticket_id",
   "event",
   "column_break_iwxi",
   "ticket_type",
@@ -23,7 +24,8 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Attende Name",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "event",
@@ -86,40 +88,21 @@
  "image_field": "qr_code",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2025-09-25 17:52:29.655177",
+ "links": [
+  {
+   "link_doctype": "Festa Check In",
+   "link_fieldname": "ticket"
+  }
+ ],
+ "modified": "2025-09-25 21:26:12.644047",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Ticket",
- "naming_rule": "Autoincrement",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Organizer",
-   "select": 1,
-   "share": 1,
-   "write": 1
-  },
-  {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -128,7 +111,33 @@
    "read": 1,
    "report": 1,
    "role": "Admin",
-   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Organizer",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Attendee",
    "share": 1,
    "write": 1
   }

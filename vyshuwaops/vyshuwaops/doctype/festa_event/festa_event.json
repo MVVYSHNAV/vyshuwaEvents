@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:{YYYY}-Event-{MM}-{#####}",
+ "autoname": "field:title",
  "creation": "2025-09-24 12:29:02.647818",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -63,7 +63,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Draft\nPublished\nCancelled",
+   "options": "Draft\nScheduled\nCancelled",
    "reqd": 1
   },
   {
@@ -148,6 +148,7 @@
  "index_web_pages_for_search": 1,
  "links": [
   {
+   "group": "General",
    "link_doctype": "Festa Sponser",
    "link_fieldname": "event"
   },
@@ -165,13 +166,18 @@
    "group": "Booking",
    "link_doctype": "Festa Ticket",
    "link_fieldname": "event"
+  },
+  {
+   "group": "General",
+   "link_doctype": "Festa Check In",
+   "link_fieldname": "ticket"
   }
  ],
- "modified": "2025-09-25 16:18:21.938581",
+ "modified": "2025-09-25 21:09:07.045497",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "Festa Event",
- "naming_rule": "Expression",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -223,7 +229,7 @@
   },
   {
    "color": "Green",
-   "title": "Published"
+   "title": "Scheduled"
   },
   {
    "color": "Red",

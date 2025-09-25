@@ -1,15 +1,9 @@
 # Copyright (c) 2025, It enables organizers to create and publish events, define venues, and set ticket categories, while attendees can browse events, book tickets, and receive confirmations with secure online payments.vyshnav and contributors
 # For license information, please see license.txt
 
-import frappe
+# import frappe
 from frappe.model.document import Document
 
 
-class FestaEvent(Document):
-
-	@frappe.whitelist
-	def check_in(self, ticket_id):
-		frappe.get_doc({
-			"doctype": "Festa Check In",
-			"ticket" : ticket_id,
-		}).insert().submit()
+class FestaCheckIn(Document):
+	pass
