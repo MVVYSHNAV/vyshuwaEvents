@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "vyshuwa Festa",
  "links": [],
- "modified": "2025-09-25 10:50:17.525058",
+ "modified": "2025-09-25 13:41:43.245878",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "vyshuwa Festa",
@@ -56,20 +56,20 @@
    "type": "DocType"
   },
   {
+   "color": "Yellow",
+   "doc_view": "List",
+   "label": "Ticket",
+   "link_to": "Festa Ticket",
+   "stats_filter": "[[\"Festa Ticket\",\"docstatus\",\"=\",\"1\",false]]",
+   "type": "DocType"
+  },
+  {
    "color": "Green",
    "doc_view": "List",
    "format": "{} Published",
    "label": "Events",
    "link_to": "Festa Event",
    "stats_filter": "[[\"Festa Event\",\"is_published\",\"=\",1,false]]",
-   "type": "DocType"
-  },
-  {
-   "color": "Yellow",
-   "doc_view": "List",
-   "label": "Ticket",
-   "link_to": "Festa Ticket",
-   "stats_filter": "[]",
    "type": "DocType"
   }
  ],

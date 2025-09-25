@@ -12,6 +12,7 @@ class FestaBooking(Document):
 
 	def set_currency(self):
 		self.set_currency = self.attendes[0].currency
+		
 	def set_total(self):
 		self.total_amount = 0
 		for attende in self.attendes:
