@@ -99,7 +99,7 @@
    "link_fieldname": "booking"
   }
  ],
- "modified": "2025-09-24 22:57:54.698107",
+ "modified": "2025-09-25 12:40:09.124088",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Booking",
@@ -114,6 +114,7 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "select": 1,
    "share": 1,
    "submit": 1,
    "write": 1

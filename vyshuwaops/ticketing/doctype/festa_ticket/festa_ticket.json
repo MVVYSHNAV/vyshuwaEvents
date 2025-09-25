@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "autoname": "autoincrement",
  "creation": "2025-09-24 21:47:57.218811",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -10,10 +10,20 @@
   "column_break_iwxi",
   "ticket_type",
   "booking",
+  "section_break_tcaf",
+  "qr_code",
   "section_break_xzvx",
   "amended_from"
  ],
  "fields": [
+  {
+   "fieldname": "attende_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Attende Name",
+   "reqd": 1
+  },
   {
    "fieldname": "event",
    "fieldtype": "Link",
@@ -21,6 +31,10 @@
    "label": "Event",
    "options": "Festa Event",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_iwxi",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "ticket_type",
@@ -39,16 +53,17 @@
    "options": "Festa Booking"
   },
   {
-   "fieldname": "column_break_iwxi",
-   "fieldtype": "Column Break"
+   "fieldname": "section_break_tcaf",
+   "fieldtype": "Section Break"
   },
   {
-   "fieldname": "attende_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Attende Name",
-   "reqd": 1
+   "fieldname": "qr_code",
+   "fieldtype": "Attach Image",
+   "label": "QR Code"
+  },
+  {
+   "fieldname": "section_break_xzvx",
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "amended_from",
@@ -59,20 +74,18 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "section_break_xzvx",
-   "fieldtype": "Section Break"
   }
  ],
  "grid_page_length": 50,
+ "image_field": "qr_code",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-25 11:05:48.895476",
+ "modified": "2025-09-25 13:06:00.735075",
  "modified_by": "Administrator",
- "module": "Vyshuwaops",
+ "module": "Ticketing",
  "name": "Festa Ticket",
+ "naming_rule": "Autoincrement",
  "owner": "Administrator",
  "permissions": [
   {
