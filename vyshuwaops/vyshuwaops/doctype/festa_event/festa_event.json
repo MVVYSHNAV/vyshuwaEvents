@@ -152,19 +152,22 @@
    "link_fieldname": "event"
   },
   {
+   "group": "Booking",
    "link_doctype": "Festa Ticket Type",
    "link_fieldname": "event"
   },
   {
+   "group": "Booking",
    "link_doctype": "Festa Booking",
    "link_fieldname": "event"
   },
   {
+   "group": "Booking",
    "link_doctype": "Festa Ticket",
    "link_fieldname": "event"
   }
  ],
- "modified": "2025-09-24 21:54:45.784459",
+ "modified": "2025-09-25 16:18:21.938581",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "Festa Event",
@@ -180,6 +183,31 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Admin",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Organizer",
    "share": 1,
    "write": 1
   }
