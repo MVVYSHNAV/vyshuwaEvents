@@ -6,30 +6,52 @@
 
 import frappe
 from frappe.model.document import Document
+import io
+import qrcode
+import random
+import string
 
 class FestaTicket(Document):
     def before_insert(self):
         self.generate_qr_code()
 
     def generate_qr_code(self):
-        import io
-        import qrcode
-        import json
+        # Generate a random ticket ID based on the event name.
+        # This creates a more unique and identifiable ticket ID than the document's default name.
+        event_name = "".join(e for e in self.event if e.isalnum())
+        random_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        self.ticket_id = f"{event_name}-{random_id}"
 
-        # Prepare QR data
-        qr_data = {
-            "attendee_name": self.attende_name or "",
-            "ticket_id": self.name or "",
-            "event": self.event or "",
-            "type": self.ticket_type or "",
-            "issued_on": frappe.utils.now()
-        }
+        # Place the attendee's name on its own line at the top to give it prominence.
+        qr_string = (
+            f"Attendee: {self.attende_name or ''}\n"
+            f"Ticket ID: {self.ticket_id or ''}\n"
+            f"Event: {self.event or ''}\n"
+            f"Type: {self.ticket_type or ''}\n"
+            f"Issued On: {frappe.utils.now()}"
+        )
 
-        # Convert to JSON
-        qr_string = json.dumps(qr_data)
+        # Use the QRCode class for more control over style and color.
+        # This allows for a more "modern" look by specifying box size and border.
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,  # A slightly larger size for a clearer look
+            border=4,
+        )
 
-        # Generate QR image
-        img = qrcode.make(qr_string)
+        # Add the data to the QR code
+        qr.add_data(qr_string)
+        qr.make(fit=True)
+
+        # Generate the QR image with custom colors.
+        # A dark blue (#1A4F8F) is used for the fill color.
+        img = qr.make_image(
+            fill_color="#1A4F8F",
+            back_color="white"
+        )
+
+        # Save the image to a BytesIO object
         output = io.BytesIO()
         img.save(output, format="PNG")
         hex_data = output.getvalue()

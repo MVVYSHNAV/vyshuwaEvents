@@ -5,6 +5,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "ticket_id",
   "attende_name",
   "event",
   "column_break_iwxi",
@@ -74,6 +75,11 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "ticket_id",
+   "fieldtype": "Data",
+   "label": "Ticket ID"
   }
  ],
  "grid_page_length": 50,
@@ -81,7 +87,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-25 16:20:15.064600",
+ "modified": "2025-09-25 17:52:29.655177",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Ticket",
