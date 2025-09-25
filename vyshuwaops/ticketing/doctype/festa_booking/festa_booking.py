@@ -27,8 +27,14 @@ class FestaBooking(Document):
 			ticket.booking = self.name
 			ticket.ticket_type = attende.ticket_type
 			ticket.attende_name = attende.full_name
-			ticket.insert()
+			ticket.insert().submit()
 
-	# def on_cancel(Self):
-	# 	self.ticket_Cancel()
-	# 	pass
+	def before_cancel(self):
+		self.ticket_Cancel()
+		
+	def ticket_cancel(self):
+		tickets_cancel_booking = frappe.db.get_all("Festa Ticket", {"booking": self.name }, pluck="name")
+
+		for ticket in tickets_cancel_booking:
+			ticket_doc = frappe.get_doc("Festa Ticket", ticket)
+			ticket_doc.cancel()

@@ -9,7 +9,9 @@
   "event",
   "column_break_iwxi",
   "ticket_type",
-  "booking"
+  "booking",
+  "section_break_xzvx",
+  "amended_from"
  ],
  "fields": [
   {
@@ -47,12 +49,27 @@
    "in_standard_filter": 1,
    "label": "Attende Name",
    "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Festa Ticket",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_xzvx",
+   "fieldtype": "Section Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2025-09-24 23:11:00.022964",
+ "modified": "2025-09-25 11:05:48.895476",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "Festa Ticket",
