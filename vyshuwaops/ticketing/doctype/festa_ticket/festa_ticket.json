@@ -9,9 +9,11 @@
   "attende_name",
   "ticket_id",
   "event",
+  "booking",
   "column_break_iwxi",
   "ticket_type",
-  "booking",
+  "price",
+  "venue",
   "section_break_tcaf",
   "qr_code",
   "section_break_xzvx",
@@ -82,6 +84,18 @@
    "fieldname": "ticket_id",
    "fieldtype": "Data",
    "label": "Ticket ID"
+  },
+  {
+   "fetch_from": "ticket_type.price",
+   "fieldname": "price",
+   "fieldtype": "Data",
+   "label": "Price"
+  },
+  {
+   "fetch_from": "event.venue",
+   "fieldname": "venue",
+   "fieldtype": "Data",
+   "label": "Venue"
   }
  ],
  "grid_page_length": 50,
@@ -92,9 +106,13 @@
   {
    "link_doctype": "Festa Check In",
    "link_fieldname": "ticket"
+  },
+  {
+   "link_doctype": "Sales Invoice",
+   "link_fieldname": "title"
   }
  ],
- "modified": "2025-09-25 21:26:12.644047",
+ "modified": "2025-09-26 15:31:08.959288",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Ticket",

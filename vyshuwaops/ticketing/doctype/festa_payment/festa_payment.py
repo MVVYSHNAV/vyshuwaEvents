@@ -5,7 +5,7 @@
 from frappe.model.document import Document
 
 
-class FestaAttendeBooking(Document):
+class FestaPayment(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -14,13 +14,12 @@ class FestaAttendeBooking(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		currency: DF.Link
-		email: DF.Data
-		full_name: DF.Data
-		parent: DF.Data
-		parentfield: DF.Data
-		parenttype: DF.Data
-		price: DF.Currency
-		ticket_type: DF.Link
+		amount: DF.Currency
+		currency: DF.Link | None
+		name: DF.Int | None
+		payment_recieved: DF.Check
+		reference_docname: DF.DynamicLink | None
+		reference_doctype: DF.Link | None
+		user: DF.Link | None
 	# end: auto-generated types
 	pass

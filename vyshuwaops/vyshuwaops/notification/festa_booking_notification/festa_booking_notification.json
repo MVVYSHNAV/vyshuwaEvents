@@ -1,0 +1,33 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "",
+ "creation": "2025-09-26 00:24:31.503421",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Festa Booking",
+ "enabled": 1,
+ "event": "Submit",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<p>Dear {{ doc.attendee_name }},</p>\n<p>Thank you for your booking! Your booking for {{ doc.event }} has been successfully confirmed.</p>\n<p>We look forward to your participation.</p>\n<p>Best regards,</p>\n<p>The Team</p>\n",
+ "message_type": "HTML",
+ "modified": "2025-09-26 00:34:17.384043",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Festa Booking Notification",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "user",
+   "receiver_by_role": "Attendee"
+  }
+ ],
+ "send_system_notification": 1,
+ "send_to_all_assignees": 0,
+ "sender": "Festa Event Support",
+ "sender_email": "vyshnavmv15@gmail.com",
+ "subject": "Booking Confirmation for {{ doc.event }} - Attendee: {{ doc.attendee_name }}",
+ "value_changed": "currency"
+}

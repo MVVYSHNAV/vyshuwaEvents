@@ -20,9 +20,11 @@ class FestaTicket(Document):
         attende_name: DF.Data
         booking: DF.Link | None
         event: DF.Link
+        price: DF.Data | None
         qr_code: DF.AttachImage | None
         ticket_id: DF.Data | None
         ticket_type: DF.Link
+        venue: DF.Data | None
     # end: auto-generated types
     def before_insert(self):
         self.generate_qr_code()

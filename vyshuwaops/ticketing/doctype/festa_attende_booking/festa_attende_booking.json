@@ -15,13 +15,6 @@
  ],
  "fields": [
   {
-   "fieldname": "full_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Full Name",
-   "reqd": 1
-  },
-  {
    "fieldname": "email",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -60,13 +53,21 @@
    "label": "Currency",
    "options": "Currency",
    "reqd": 1
+  },
+  {
+   "fetch_from": "customer_name.order_type",
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-09-24 22:29:29.505976",
+ "modified": "2025-09-26 14:29:56.500420",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Attende Booking",
