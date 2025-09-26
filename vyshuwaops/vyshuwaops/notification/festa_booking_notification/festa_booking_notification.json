@@ -13,7 +13,7 @@
  "is_standard": 1,
  "message": "<p>Dear {{ doc.attendee_name }},</p>\n<p>Thank you for your booking! Your booking for {{ doc.event }} has been successfully confirmed.</p>\n<p>We look forward to your participation.</p>\n<p>Best regards,</p>\n<p>The Team</p>\n",
  "message_type": "HTML",
- "modified": "2025-09-26 00:34:17.384043",
+ "modified": "2025-09-26 18:20:25.384138",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "Festa Booking Notification",
@@ -28,6 +28,6 @@
  "send_to_all_assignees": 0,
  "sender": "Festa Event Support",
  "sender_email": "vyshnavmv15@gmail.com",
- "subject": "Booking Confirmation for {{ doc.event }} - Attendee: {{ doc.attendee_name }}",
+ "subject": "{{ doc.event }}",
  "value_changed": "currency"
 }
