@@ -71,7 +71,7 @@ class FestaBooking(Document):
             frappe.throw("No attendees found to create Sales Order.")
 
         # Get or create Customer
-        customer_name = frappe.db.get_value("Customer", {"customer_name": self.full_name}, "name")
+        customer_name = frappe.db.get_value("Customer", {"customer_name": self.user}, "name")
         if not customer_name:
             customer = frappe.new_doc("Customer")
             customer.customer_name = self.user
