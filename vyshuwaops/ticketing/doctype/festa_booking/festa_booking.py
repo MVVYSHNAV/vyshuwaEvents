@@ -9,17 +9,16 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import nowdate, get_url
 from typing import TYPE_CHECKING
-from frappe.integrations.utils import get_payment_gateway_controller
 
 if TYPE_CHECKING:
     from frappe.types import DF
     from vyshuwaops.ticketing.doctype.festa_attende_booking.festa_attende_booking import FestaAttendeBooking
 
+from frappe.integrations.utils import get_payment_gateway_controller
+
 
 class FestaBooking(Document):
     # begin: auto-generated types
-    # This code is auto-generated. Do not modify anything in this block.
-
     from typing import TYPE_CHECKING
 
     if TYPE_CHECKING:
@@ -33,22 +32,24 @@ class FestaBooking(Document):
         qr_code_url: DF.AttachImage | None
         total_amount: DF.Currency
         user: DF.Link
+        sales_order: DF.Link | None
+        payment_status: DF.Select | None
+        razorpay_order_id: DF.Data | None
+        razorpay_payment_id: DF.Data | None
+        razorpay_signature: DF.Data | None
     # end: auto-generated types
 
     def validate(self):
-        """Run validations before save"""
         self.set_total()
         self.set_currency()
 
     def set_currency(self):
-        """Set booking currency from the first attendee"""
         if self.attendes and hasattr(self.attendes[0], "currency"):
             self.currency = self.attendes[0].currency
         else:
-            self.currency = frappe.db.get_default("currency")  # fallback
+            self.currency = frappe.db.get_default("currency")
 
     def set_total(self):
-        """Calculate total amount from attendees"""
         total = 0
         for attende in self.attendes:
             try:
@@ -58,7 +59,6 @@ class FestaBooking(Document):
         self.total_amount = total
 
     def on_submit(self):
-        """On submit: create tickets, sales order, generate QR code, and send emails"""
         self.generate_tickets()
         if not self.get("sales_order"):
             self.create_sales_order()
@@ -66,7 +66,6 @@ class FestaBooking(Document):
         self.send_booking_emails()
 
     def generate_tickets(self):
-        """Create Festa Ticket for each attendee"""
         for attende in self.attendes:
             ticket = frappe.new_doc("Festa Ticket")
             ticket.event = self.event
@@ -77,12 +76,8 @@ class FestaBooking(Document):
             ticket.submit()
 
     def generate_qr_code(self):
-        """Generate QR code with full booking details and attach to Booking"""
-        import io
-        import qrcode
-        import base64
+        import io, qrcode, base64
 
-        # Prepare attendee details
         attendee_details = "\n".join([
             f"{a.full_name} ({a.ticket_type}, {a.email})" for a in self.attendes
         ])
@@ -94,23 +89,15 @@ class FestaBooking(Document):
             f"Attendees:\n{attendee_details}"
         )
 
-        # Generate QR code
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-        )
+        qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
         qr.add_data(qr_data)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
 
-        # Convert image to base64
         output = io.BytesIO()
         img.save(output, format="PNG")
         b64_data = base64.b64encode(output.getvalue()).decode()
 
-        # Save as File in Frappe
         filename = f"Booking_{self.name}_QR.png"
         file_doc = frappe.get_doc({
             "doctype": "File",
@@ -121,19 +108,14 @@ class FestaBooking(Document):
             "is_private": 0
         })
         file_doc.insert(ignore_permissions=True)
-
-        # Save public URL
         self.db_set("qr_code_url", get_url(file_doc.file_url))
 
     def send_booking_emails(self):
-        """Send email notifications to booking user and attendees with QR code"""
         recipients = []
-
         qr_img_html = f'<img src="{self.qr_code_url}" alt="Booking QR Code">' if self.qr_code_url else ""
 
-        # Booking User
         booking_email = self.user
-        if "@" not in booking_email:  # system user
+        if "@" not in booking_email:
             booking_email = frappe.db.get_value("User", self.user, "email")
 
         if booking_email:
@@ -151,7 +133,6 @@ class FestaBooking(Document):
                 """
             )
 
-        # Each Attendee
         for attende in self.attendes:
             if attende.email:
                 recipients.append(attende.email)
@@ -172,7 +153,6 @@ class FestaBooking(Document):
         frappe.msgprint(f"Booking emails sent to: {', '.join(recipients)}")
 
     def _send_email(self, recipient, subject, message):
-        """Helper to send email"""
         frappe.sendmail(
             recipients=[recipient],
             subject=subject,
@@ -182,11 +162,9 @@ class FestaBooking(Document):
         )
 
     def create_sales_order(self):
-        """Create Sales Order linked to this booking (only once, on submit)"""
         if not self.attendes:
             frappe.throw("No attendees found to create Sales Order.")
 
-        # Get or create Customer
         customer_name = frappe.db.get_value("Customer", {"customer_name": self.user}, "name")
         if not customer_name:
             customer = frappe.new_doc("Customer")
@@ -195,14 +173,12 @@ class FestaBooking(Document):
             customer.insert(ignore_permissions=True)
             customer_name = customer.name
 
-        # Create Sales Order
         so = frappe.new_doc("Sales Order")
         so.customer = customer_name
         so.transaction_date = nowdate()
         so.company = frappe.db.get_default("Company")
         so.currency = self.currency
 
-        # Add attendees as line items
         for attende in self.attendes:
             item_code = frappe.get_value("Festa Ticket Type", attende.ticket_type, "title")
             if not item_code or not frappe.db.exists("Item", item_code):
@@ -219,19 +195,17 @@ class FestaBooking(Document):
 
         so.insert(ignore_permissions=True)
         so.submit()
-
-        # Link Sales Order back to booking (prevents duplicate creation)
         self.sales_order = so.name
         frappe.msgprint(f"Sales Order {so.name} created for Booking {self.name}")
 
-        
+    # ---------------- Razorpay Payment Integration ---------------- #
+
     @frappe.whitelist()
     def create_payment(self):
-        """Create a Razorpay payment order via Frappe Payments app"""
+        """Create Razorpay payment order"""
         controller = get_payment_gateway_controller("Razorpay")
-        
         payment_details = {
-            "amount": int(self.total_amount * 100),  # Razorpay expects paise
+            "amount": int(self.total_amount * 100),
             "currency": self.currency or "INR",
             "reference_doctype": self.doctype,
             "reference_docname": self.name,
@@ -239,14 +213,21 @@ class FestaBooking(Document):
             "customer_name": self.user,
             "customer_email": frappe.db.get_value("User", self.user, "email"),
         }
-
-        # Create Razorpay order
         order = controller.create_order(**payment_details)
-
-        # Save Razorpay order ID
         self.db_set("razorpay_order_id", order.get("id"))
         self.db_set("payment_status", "Draft")
-
         return order
 
-    
+    @frappe.whitelist()
+    def verify_payment(self, payment_id, order_id, signature):
+        """Verify Razorpay payment signature"""
+        controller = get_payment_gateway_controller("Razorpay")
+        controller.verify_payment_signature({
+            "razorpay_order_id": order_id,
+            "razorpay_payment_id": payment_id,
+            "razorpay_signature": signature
+        })
+        self.db_set("razorpay_payment_id", payment_id)
+        self.db_set("razorpay_signature", signature)
+        self.db_set("payment_status", "Paid")
+        frappe.msgprint(f"Payment for Booking {self.name} verified successfully.")
