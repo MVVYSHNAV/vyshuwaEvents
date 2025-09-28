@@ -62,6 +62,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "fetch_from": "booking.qr_code_url",
    "fieldname": "qr_code",
    "fieldtype": "Attach Image",
    "label": "QR Code"
@@ -112,7 +113,7 @@
    "link_fieldname": "title"
   }
  ],
- "modified": "2025-09-26 15:31:08.959288",
+ "modified": "2025-09-26 19:04:45.919631",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Ticket",

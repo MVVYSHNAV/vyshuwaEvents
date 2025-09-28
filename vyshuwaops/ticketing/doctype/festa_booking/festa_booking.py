@@ -7,11 +7,9 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import nowdate
+from frappe.utils import nowdate, get_url
 from typing import TYPE_CHECKING
-import qrcode
-from io import BytesIO
-import base64
+from frappe.integrations.utils import get_payment_gateway_controller
 
 if TYPE_CHECKING:
     from frappe.types import DF
@@ -19,16 +17,23 @@ if TYPE_CHECKING:
 
 
 class FestaBooking(Document):
-    # Auto-generated type hints
+    # begin: auto-generated types
+    # This code is auto-generated. Do not modify anything in this block.
+
+    from typing import TYPE_CHECKING
+
     if TYPE_CHECKING:
-        amended_from: "DF.Link | None"
-        attendes: "DF.Table[FestaAttendeBooking]"
-        currency: "DF.Link | None"
-        event: "DF.Link"
-        total_amount: "DF.Currency"
-        user: "DF.Link"
-        sales_order: "DF.Link | None"   # <-- Add custom Link field to Sales Order
-        qr_code_url: "DF.Data | None"
+        from frappe.types import DF
+        from vyshuwaops.ticketing.doctype.festa_attende_booking.festa_attende_booking import FestaAttendeBooking
+
+        amended_from: DF.Link | None
+        attendes: DF.Table[FestaAttendeBooking]
+        currency: DF.Link | None
+        event: DF.Link
+        qr_code_url: DF.AttachImage | None
+        total_amount: DF.Currency
+        user: DF.Link
+    # end: auto-generated types
 
     def validate(self):
         """Run validations before save"""
@@ -72,7 +77,12 @@ class FestaBooking(Document):
             ticket.submit()
 
     def generate_qr_code(self):
-        """Generate QR code with full booking details"""
+        """Generate QR code with full booking details and attach to Booking"""
+        import io
+        import qrcode
+        import base64
+
+        # Prepare attendee details
         attendee_details = "\n".join([
             f"{a.full_name} ({a.ticket_type}, {a.email})" for a in self.attendes
         ])
@@ -96,35 +106,35 @@ class FestaBooking(Document):
         img = qr.make_image(fill_color="black", back_color="white")
 
         # Convert image to base64
-        buffered = BytesIO()
-        img.save(buffered, format="PNG")
-        qr_base64 = base64.b64encode(buffered.getvalue()).decode()
+        output = io.BytesIO()
+        img.save(output, format="PNG")
+        b64_data = base64.b64encode(output.getvalue()).decode()
 
-        # Attach to Booking
+        # Save as File in Frappe
         filename = f"Booking_{self.name}_QR.png"
         file_doc = frappe.get_doc({
             "doctype": "File",
             "file_name": filename,
             "attached_to_doctype": self.doctype,
             "attached_to_name": self.name,
-            "content": qr_base64,
+            "content": b64_data,
             "is_private": 0
         })
         file_doc.insert(ignore_permissions=True)
 
-        # Save URL to Booking
-        self.db_set("qr_code_url", file_doc.file_url)
+        # Save public URL
+        self.db_set("qr_code_url", get_url(file_doc.file_url))
 
     def send_booking_emails(self):
         """Send email notifications to booking user and attendees with QR code"""
         recipients = []
 
+        qr_img_html = f'<img src="{self.qr_code_url}" alt="Booking QR Code">' if self.qr_code_url else ""
+
         # Booking User
         booking_email = self.user
-        if "@" not in booking_email:  # if system user
+        if "@" not in booking_email:  # system user
             booking_email = frappe.db.get_value("User", self.user, "email")
-
-        qr_img_html = f'<img src="{self.qr_code_url}" alt="Booking QR Code">' if self.qr_code_url else ""
 
         if booking_email:
             recipients.append(booking_email)
@@ -213,3 +223,30 @@ class FestaBooking(Document):
         # Link Sales Order back to booking (prevents duplicate creation)
         self.sales_order = so.name
         frappe.msgprint(f"Sales Order {so.name} created for Booking {self.name}")
+
+        
+    @frappe.whitelist()
+    def create_payment(self):
+        """Create a Razorpay payment order via Frappe Payments app"""
+        controller = get_payment_gateway_controller("Razorpay")
+        
+        payment_details = {
+            "amount": int(self.total_amount * 100),  # Razorpay expects paise
+            "currency": self.currency or "INR",
+            "reference_doctype": self.doctype,
+            "reference_docname": self.name,
+            "receipt": self.name,
+            "customer_name": self.user,
+            "customer_email": frappe.db.get_value("User", self.user, "email"),
+        }
+
+        # Create Razorpay order
+        order = controller.create_order(**payment_details)
+
+        # Save Razorpay order ID
+        self.db_set("razorpay_order_id", order.get("id"))
+        self.db_set("payment_status", "Draft")
+
+        return order
+
+    
