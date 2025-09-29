@@ -111,9 +111,13 @@
   {
    "link_doctype": "Sales Invoice",
    "link_fieldname": "title"
+  },
+  {
+   "link_doctype": "Sales Order",
+   "link_fieldname": "customer"
   }
  ],
- "modified": "2025-09-26 19:04:45.919631",
+ "modified": "2025-09-29 10:40:00.410079",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Ticket",

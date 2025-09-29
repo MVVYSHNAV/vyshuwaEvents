@@ -15,10 +15,10 @@ class FestaTicketType(Document):
 		from frappe.types import DF
 
 		currency: DF.Link | None
-		event: DF.Link
-		item_name: DF.Data
+		event: DF.Link | None
+		item_code: DF.Data | None
+		item_name: DF.Link
 		name: DF.Int | None
 		price: DF.Data
-		title: DF.Link
 	# end: auto-generated types
 	pass

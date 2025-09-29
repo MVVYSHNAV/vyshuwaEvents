@@ -106,15 +106,15 @@
    "link_fieldname": "booking"
   },
   {
-   "link_doctype": "Festa Payment",
-   "link_fieldname": "reference_docname"
+   "link_doctype": "Payment Request",
+   "link_fieldname": "company"
   },
   {
    "link_doctype": "Sales Order",
    "link_fieldname": "customer"
   }
  ],
- "modified": "2025-09-28 18:45:03.530348",
+ "modified": "2025-09-29 15:22:42.270398",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Booking",

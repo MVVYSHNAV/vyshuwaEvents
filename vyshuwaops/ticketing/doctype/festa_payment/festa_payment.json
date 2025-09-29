@@ -5,60 +5,64 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "user",
-  "reference_doctype",
-  "reference_docname",
+  "payment_status",
+  "razorpay_order_id",
+  "razorpay_payment_id",
+  "razorpay_signature",
   "column_break_wcqp",
-  "payment_recieved",
+  "booking",
   "amount",
-  "currency"
+  "customer_name"
  ],
  "fields": [
   {
-   "default": "0",
-   "fieldname": "payment_recieved",
-   "fieldtype": "Check",
-   "label": "Payment Recieved"
+   "fieldname": "column_break_wcqp",
+   "fieldtype": "Column Break"
   },
   {
-   "fieldname": "reference_doctype",
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "options": "Draft\nPaid"
+  },
+  {
+   "fieldname": "razorpay_order_id",
+   "fieldtype": "Data",
+   "label": "Razorpay Order Id"
+  },
+  {
+   "fieldname": "razorpay_payment_id",
+   "fieldtype": "Data",
+   "label": "Razorpay Payment Id"
+  },
+  {
+   "fieldname": "razorpay_signature",
+   "fieldtype": "Data",
+   "label": "Razorpay Signature"
+  },
+  {
+   "fieldname": "booking",
    "fieldtype": "Link",
-   "label": "Reference Doctype",
-   "options": "DocType"
+   "label": "Booking",
+   "options": "Festa Booking"
   },
   {
-   "fieldname": "reference_docname",
-   "fieldtype": "Dynamic Link",
-   "label": "Reference DocName",
-   "options": "reference_doctype"
-  },
-  {
+   "fetch_from": "booking.total_amount",
    "fieldname": "amount",
-   "fieldtype": "Currency",
+   "fieldtype": "Data",
    "label": "Amount"
   },
   {
-   "default": "INR",
-   "fieldname": "currency",
-   "fieldtype": "Link",
-   "label": "Currency",
-   "options": "Currency"
-  },
-  {
-   "fieldname": "user",
-   "fieldtype": "Link",
-   "label": "User",
-   "options": "User"
-  },
-  {
-   "fieldname": "column_break_wcqp",
-   "fieldtype": "Column Break"
+   "fetch_from": "booking.user",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-26 11:00:51.881320",
+ "modified": "2025-09-29 12:19:53.823119",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Payment",
@@ -79,9 +83,11 @@
   }
  ],
  "row_format": "Dynamic",
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "booking",
  "track_changes": 1,
  "track_seen": 1,
  "track_views": 1

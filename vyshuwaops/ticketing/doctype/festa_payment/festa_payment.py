@@ -14,12 +14,13 @@ class FestaPayment(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		amount: DF.Currency
-		currency: DF.Link | None
+		amount: DF.Data | None
+		booking: DF.Link | None
+		customer_name: DF.Data | None
 		name: DF.Int | None
-		payment_recieved: DF.Check
-		reference_docname: DF.DynamicLink | None
-		reference_doctype: DF.Link | None
-		user: DF.Link | None
+		payment_status: DF.Literal["Draft", "Paid"]
+		razorpay_order_id: DF.Data | None
+		razorpay_payment_id: DF.Data | None
+		razorpay_signature: DF.Data | None
 	# end: auto-generated types
 	pass

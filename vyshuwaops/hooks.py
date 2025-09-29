@@ -10,6 +10,25 @@ app_license = "mit"
 
 required_apps = ["payments"]
 
+
+scheduler_events = {
+    "daily": [
+        "vyshuwaops.ticketing.doctype.festa_booking.festa_booking.send_reminders"
+    ]
+}
+
+
+doc_events = {
+    "Sales Order": {
+        "on_submit": "vyshuwaops.api.sales_order_hook.handle_sales_order_submit"
+    }
+}
+
+
+override_whitelisted_methods = {
+    "vyshuwaops.api.api.razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
+}
+
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{

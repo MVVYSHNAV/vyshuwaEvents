@@ -5,22 +5,14 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "title",
   "item_name",
+  "item_code",
   "price",
   "column_break_cgok",
   "event",
   "currency"
  ],
  "fields": [
-  {
-   "description": "Vip, Share, etc",
-   "fieldname": "title",
-   "fieldtype": "Link",
-   "label": "Title",
-   "options": "Item",
-   "reqd": 1
-  },
   {
    "fieldname": "column_break_cgok",
    "fieldtype": "Column Break"
@@ -30,11 +22,10 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Event",
-   "options": "Festa Event",
-   "reqd": 1
+   "options": "Festa Event"
   },
   {
-   "fetch_from": "title.valuation_rate",
+   "fetch_from": "item_name.valuation_rate",
    "fetch_if_empty": 1,
    "fieldname": "price",
    "fieldtype": "Data",
@@ -51,11 +42,17 @@
    "options": "Currency"
   },
   {
-   "fetch_from": "title.item_name",
    "fieldname": "item_name",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Item Name",
+   "options": "Item",
    "reqd": 1
+  },
+  {
+   "fetch_from": "item_name.item_code",
+   "fieldname": "item_code",
+   "fieldtype": "Data",
+   "label": "Item Code"
   }
  ],
  "grid_page_length": 50,
@@ -66,7 +63,7 @@
    "link_fieldname": "item_name"
   }
  ],
- "modified": "2025-09-26 16:38:48.509881",
+ "modified": "2025-09-29 10:36:16.511549",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Ticket Type",
@@ -119,5 +116,5 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "title"
+ "title_field": "item_name"
 }
