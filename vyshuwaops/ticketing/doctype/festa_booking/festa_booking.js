@@ -19,5 +19,12 @@ frappe.ui.form.on('Festa Booking', {
                 });
             }, __('Actions'));
         }
+    },
+   
+    onload: function(frm) {
+        // Only set if not already filled
+        if (!frm.doc.user) {
+            frm.set_value('user', frappe.session.user);
+        }
     }
 });

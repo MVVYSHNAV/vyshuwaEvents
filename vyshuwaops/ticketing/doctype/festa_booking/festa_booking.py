@@ -39,6 +39,11 @@ class FestaBooking(Document):
             self.currency = self.attendes[0].currency
         else:
             self.currency = frappe.db.get_default("currency")
+    
+    def before_insert(self):
+        """Automatically set the booking user to the logged-in session user"""
+        if not self.user:
+            self.user = frappe.session.user
 
     def set_total(self):
         total = 0
