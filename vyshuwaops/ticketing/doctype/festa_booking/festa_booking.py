@@ -98,6 +98,8 @@ class FestaBooking(Document):
     # ----------------------------
     # QR code generation
     # ----------------------------
+    import qrcode
+
     def generate_qr_code(self):
         attendee_details = "\n".join([
             f"{a.full_name} ({a.ticket_type}, {a.email})" for a in self.attendes
@@ -118,11 +120,18 @@ class FestaBooking(Document):
         )
         qr.add_data(qr_data)
         qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
 
+        # PNG for email attachment
+        img = qr.make_image(fill_color="black", back_color="white")
         output = io.BytesIO()
         img.save(output, format="PNG")
-        qr_bytes = output.getvalue()  # store bytes for email attachment
+        qr_bytes = output.getvalue()
+        self._qr_bytes = qr_bytes
+
+        # ASCII QR for text fallback
+        ascii_qr_io = io.StringIO()
+        qr.print_ascii(out=ascii_qr_io, invert=True)
+        self._ascii_qr = ascii_qr_io.getvalue()
 
         # Save as File in Frappe
         filename = f"Booking_{self.name}_QR.png"
@@ -137,8 +146,6 @@ class FestaBooking(Document):
         file_doc.insert(ignore_permissions=True)
         self.db_set("qr_code_url", get_url(file_doc.file_url))
 
-        # Store bytes for email
-        self._qr_bytes = qr_bytes
 
     # ----------------------------
     # Email
@@ -157,12 +164,33 @@ class FestaBooking(Document):
                 recipient=booking_email,
                 subject=f"Booking Confirmation - {self.event}",
                 message=f"""
-                    <p>Dear {self.user},</p>
-                    <p>Thank you for booking tickets for <b>{self.event}</b>.</p>
-                    <p><b>Booking ID:</b> {self.name}<br>
-                    <b>Total Amount:</b> {self.total_amount} {self.currency}</p>
-                    <img src="{self.qr_code_url}" alt="Booking QR Code">
-                    <p>Best regards,<br>Event Team</p>
+                    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="background-color: #2E86C1; color: #fff; padding: 20px; text-align: center;">
+                            <h1 style="margin: 0; font-size: 24px;">Booking Confirmed</h1>
+                        </div>
+
+                        <div style="padding: 20px;">
+                            <p style="font-size: 16px;">Hi <strong>{self.user}</strong>,</p>
+                            <p style="font-size: 16px;">Your booking for <strong>{self.event}</strong> is confirmed. Here are your details:</p>
+
+                            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                                <p><strong>Booking ID:</strong> {self.name}</p>
+                                <p><strong>Total Amount:</strong> {self.total_amount} {self.currency}</p>
+                            </div>
+
+                            <pre style="font-family: monospace; font-size: 8px; line-height: 8px;">
+                                {self._ascii_qr}
+                                </pre>
+
+                            <p style="font-size: 16px;">Please keep this QR code safe. You will need it to enter the event.</p>
+
+                            <p style="margin-top: 30px; font-size: 16px;">Thanks,<br><strong>Event Team</strong></p>
+                        </div>
+
+                        <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
+                            <p style="margin: 0;">This is an automated email. Please do not reply.</p>
+                        </div>
+                    </div>
                 """,
                 attachments=[{
                     "fname": f"Booking_{self.name}_QR.png",
@@ -178,13 +206,32 @@ class FestaBooking(Document):
                     recipient=attende.email,
                     subject=f"Your Ticket for {self.event}",
                     message=f"""
-                        <p>Dear {attende.full_name},</p>
-                        <p>You are registered as an attendee for <b>{self.event}</b>.</p>
-                        <p><b>Ticket Type:</b> {attende.ticket_type}<br>
-                        <b>Booking ID:</b> {self.name}</p>
-                        <img src="{self.qr_code_url}" alt="Booking QR Code">
-                        <p>Please keep this email as your ticket confirmation.</p>
-                        <p>Best regards,<br>Event Team</p>
+                        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                <div style="background-color: #4CAF50; color: #fff; padding: 20px; text-align: center;">
+                                    <h1 style="margin: 0; font-size: 24px;">Your Ticket for {self.event}</h1>
+                                </div>
+
+                                <div style="padding: 20px;">
+                                    <p style="font-size: 16px;">Hi <strong>{attende.full_name}</strong>,</p>
+                                    <p style="font-size: 16px;">You are officially registered as an attendee for <b>{self.event}</b>.</p>
+
+                                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                                        <p><strong>Ticket Type:</strong> {attende.ticket_type}</p>
+                                        <p><strong>Booking ID:</strong> {self.name}</p>
+                                            <pre style="font-family: monospace; font-size: 8px; line-height: 8px;">
+                                            {self._ascii_qr}
+                                            </pre>
+                                    </div>
+
+                                    <p style="font-size: 16px;">Please keep this email safe. The QR code above will serve as your ticket at the event entrance.</p>
+                                    <p style="margin-top: 30px; font-size: 16px;">Best regards,<br><strong>Event Team</strong></p>
+                                </div>
+
+                                <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
+                                    <p style="margin: 0;">This is an automated email. Please do not reply.</p>
+                                </div>
+                            </div>
+
                     """,
                     attachments=[{
                         "fname": f"Booking_{self.name}_QR.png",
@@ -225,12 +272,29 @@ class FestaBooking(Document):
 
         subject = f"Reminder: Upcoming Event - {self.event}"
         message = f"""
-            <p>Hello,</p>
-            <p>This is a friendly reminder for your upcoming event booking:</p>
-            <p><b>Event:</b> {self.event}<br>
-            <b>Booking ID:</b> {self.name}</p>
-            <p>We look forward to seeing you!</p>
-            <p>Thanks,<br>Event Team</p>
+          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <div style="background-color: #FFA500; color: #fff; padding: 20px; text-align: center;">
+                    <h1 style="margin: 0; font-size: 24px;">Upcoming Event Reminder</h1>
+                </div>
+
+                <div style="padding: 20px;">
+                    <p style="font-size: 16px;">Hi <strong>{self.user}</strong>,</p>
+                    <p style="font-size: 16px;">This is a friendly reminder for your upcoming event booking. Here are the details:</p>
+
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <p><strong>Event:</strong> {self.event}</p>
+                        <p><strong>Booking ID:</strong> {self.name}</p>
+                    </div>
+
+                    <p style="font-size: 16px;">We look forward to seeing you at the event!</p>
+                    <p style="margin-top: 30px; font-size: 16px;">Thanks,<br><strong>Event Team</strong></p>
+                </div>
+
+                <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
+                    <p style="margin: 0;">This is an automated email. Please do not reply.</p>
+                </div>
+            </div>
+
         """
 
         frappe.sendmail(recipients=recipients, subject=subject, message=message)
