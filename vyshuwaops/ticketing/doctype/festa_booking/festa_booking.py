@@ -349,3 +349,27 @@ def send_reminders():
     for name in bookings:
         booking = frappe.get_doc("Festa Booking", name)
         booking.send_reminder()
+
+
+# *************************************
+# query permission
+# **************************************
+def get_bookings_for_user(doctype, txt, searchfield, start, page_len, filters):
+    import frappe
+
+    # Attendee sees only their own bookings
+    if "Attendee" in frappe.get_roles():
+        return frappe.get_all(
+            doctype,
+            filters={"user": frappe.session.user},
+            fields=["name", "event", "total_amount"]
+        )
+
+    # Organizer sees all bookings
+    elif "Organizer" in frappe.get_roles():
+        return frappe.get_all(
+            doctype,
+            fields=["name", "event", "total_amount"]
+        )
+
+    return []

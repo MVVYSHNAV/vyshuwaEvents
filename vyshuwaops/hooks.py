@@ -21,7 +21,11 @@ scheduler_events = {
 doc_events = {
     "Sales Order": {
         "on_submit": "vyshuwaops.api.sales_order_hook.handle_sales_order_submit"
+    },
+    "Payment Request": {
+        "on_submit": "vyshuwaops.vyshuwaops.doctype.festa_event.festa_event.payment_request_paid"
     }
+
 }
 
 

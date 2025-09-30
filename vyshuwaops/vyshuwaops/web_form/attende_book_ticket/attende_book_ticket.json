@@ -1,5 +1,5 @@
 {
- "accept_payment": 0,
+ "accept_payment": 1,
  "allow_comments": 0,
  "allow_delete": 0,
  "allow_edit": 0,
@@ -7,11 +7,13 @@
  "allow_multiple": 0,
  "allow_print": 0,
  "amount": 0.0,
- "amount_based_on_field": 0,
+ "amount_based_on_field": 1,
+ "amount_field": "total_amount",
  "anonymous": 0,
  "apply_document_permissions": 0,
  "banner_image": "/files/Generated_Image_September_26__2025_-_7_50PM-removebg-preview.png",
  "button_label": "Save",
+ "client_script": "// When ticket is selected in Attendees child table\nfrappe.web_form.on('attendes', {\n    ticket: function(frm, cdt, cdn) {\n        let row = locals[cdt][cdn];\n        if (row.ticket) {\n            frappe.db.get_value('Festa Ticket Type', row.ticket, ['price', 'currency'], (r) => {\n                if (r) {\n                    row.price = r.price || 0;\n                    row.currency = r.currency || \"USD\";\n                    frappe.web_form.refresh_field('attendees');\n                    update_total_amount();\n                }\n            });\n        }\n    },\n    price: function(frm, cdt, cdn) {\n        update_total_amount();\n    }\n});\n\n// Utility function to recalc total\nfunction update_total_amount() {\n    let total = 0;\n    (frappe.web_form.doc.attendees || []).forEach(row => {\n        total += flt(row.price);\n    });\n    frappe.web_form.set_value(\"total_amount\", total);\n}\n\nfrappe.ui.form.on(\"Festa Event\", {\n    refresh(frm) {\n\n        // Existing buttons code here...\n        \n        // Add Pay Now button if event is published\n        if (frm.doc.is_published && frm.doc.status === \"Scheduled\") {\n            frm.add_custom_button(__(\"Pay Now\"), () => {\n                frappe.call({\n                    method: \"your_app.festa_event.create_payment_request\",\n                    args: { docname: frm.doc.name },\n                    callback: function(r) {\n                        if(r.message) {\n                            frappe.msgprint(__(\"Payment Request Created: \") + r.message);\n                            // Redirect to payment page\n                            window.location.href = `/payment-request/${r.message}`;\n                        }\n                    }\n                });\n            }, __(\"Action\")).addClass(\"btn-success\");\n        }\n    },\n});\n\n",
  "condition_json": "[]",
  "creation": "2025-09-26 20:16:16.744340",
  "currency": "INR",
@@ -23,11 +25,12 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 0,
- "modified": "2025-09-29 17:15:23.884958",
+ "modified": "2025-09-30 11:33:58.141854",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "attende-book-ticket",
  "owner": "Administrator",
+ "payment_button_help": "pay now",
  "payment_button_label": "Buy Now",
  "payment_gateway": "Razorpay",
  "published": 1,
@@ -55,6 +58,21 @@
   },
   {
    "allow_read_on_all_link_options": 0,
+   "default": "INR",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "hidden": 0,
+   "label": "Currency",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "Currency",
+   "precision": "",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
    "fieldname": "attendes",
    "fieldtype": "Table",
    "hidden": 0,
@@ -66,6 +84,22 @@
    "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "default": "0",
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "hidden": 0,
+   "label": "Total Amount",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "currency",
+   "precision": "",
+   "read_only": 1,
+   "reqd": 0,
+   "show_in_filter": 0
   }
- ]
+ ],
+ "website_sidebar": "Contact"
 }

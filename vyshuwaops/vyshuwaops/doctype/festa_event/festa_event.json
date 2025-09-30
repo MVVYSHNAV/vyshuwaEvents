@@ -27,7 +27,9 @@
   "shedule_tab",
   "schedule",
   "payment_tab",
-  "payment_gateway"
+  "payment_gateway",
+  "section_break_jqjj",
+  "route"
  ],
  "fields": [
   {
@@ -154,9 +156,19 @@
    "fieldtype": "Link",
    "label": "Payment Gateway",
    "options": "Payment Gateway"
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Data",
+   "label": "route"
+  },
+  {
+   "fieldname": "section_break_jqjj",
+   "fieldtype": "Section Break"
   }
  ],
  "grid_page_length": 50,
+ "has_web_view": 1,
  "image_field": "cover_image",
  "index_web_pages_for_search": 1,
  "links": [
@@ -186,7 +198,7 @@
    "link_fieldname": "ticket"
   }
  ],
- "modified": "2025-09-26 11:09:02.138211",
+ "modified": "2025-09-29 18:57:45.610533",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "Festa Event",
