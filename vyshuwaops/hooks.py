@@ -29,12 +29,13 @@ doc_events = {
 }
 
 
+
 override_whitelisted_methods = {
     "vyshuwaops.api.api.razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
 }
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
+# add_to_apps_screen = [    
 # 	{
 # 		"name": "vyshuwaops",
 # 		"logo": "/assets/vyshuwaops/logo.png",
