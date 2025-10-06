@@ -28,6 +28,14 @@ class FestaBooking(Document):
         payment_status: DF.Select | None
 
     # ----------------------------
+    # Hooks
+    # ----------------------------
+    def before_insert(self):
+        """Automatically set the booking user to the logged-in session user"""
+        if not self.user:
+            self.user = frappe.session.user
+
+    # ----------------------------
     # Validation
     # ----------------------------
     def validate(self):
@@ -39,11 +47,6 @@ class FestaBooking(Document):
             self.currency = self.attendes[0].currency
         else:
             self.currency = frappe.db.get_default("currency")
-    
-    def before_insert(self):
-        """Automatically set the booking user to the logged-in session user"""
-        if not self.user:
-            self.user = frappe.session.user
 
     def set_total(self):
         total = 0
@@ -98,8 +101,6 @@ class FestaBooking(Document):
     # ----------------------------
     # QR code generation
     # ----------------------------
-    import qrcode
-
     def generate_qr_code(self):
         attendee_details = "\n".join([
             f"{a.full_name} ({a.ticket_type}, {a.email})" for a in self.attendes
@@ -146,9 +147,8 @@ class FestaBooking(Document):
         file_doc.insert(ignore_permissions=True)
         self.db_set("qr_code_url", get_url(file_doc.file_url))
 
-
     # ----------------------------
-    # Email
+    # Emails
     # ----------------------------
     def send_booking_emails(self):
         recipients = []
@@ -163,35 +163,7 @@ class FestaBooking(Document):
             self._send_email(
                 recipient=booking_email,
                 subject=f"Booking Confirmation - {self.event}",
-                message=f"""
-                    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        <div style="background-color: #2E86C1; color: #fff; padding: 20px; text-align: center;">
-                            <h1 style="margin: 0; font-size: 24px;">Booking Confirmed</h1>
-                        </div>
-
-                        <div style="padding: 20px;">
-                            <p style="font-size: 16px;">Hi <strong>{self.user}</strong>,</p>
-                            <p style="font-size: 16px;">Your booking for <strong>{self.event}</strong> is confirmed. Here are your details:</p>
-
-                            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                                <p><strong>Booking ID:</strong> {self.name}</p>
-                                <p><strong>Total Amount:</strong> {self.total_amount} {self.currency}</p>
-                            </div>
-
-                            <pre style="font-family: monospace; font-size: 8px; line-height: 8px;">
-                                {self._ascii_qr}
-                                </pre>
-
-                            <p style="font-size: 16px;">Please keep this QR code safe. You will need it to enter the event.</p>
-
-                            <p style="margin-top: 30px; font-size: 16px;">Thanks,<br><strong>Event Team</strong></p>
-                        </div>
-
-                        <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
-                            <p style="margin: 0;">This is an automated email. Please do not reply.</p>
-                        </div>
-                    </div>
-                """,
+                message=f"Your booking for {self.event} is confirmed. Booking ID: {self.name}",
                 attachments=[{
                     "fname": f"Booking_{self.name}_QR.png",
                     "fcontent": self._qr_bytes
@@ -205,34 +177,7 @@ class FestaBooking(Document):
                 self._send_email(
                     recipient=attende.email,
                     subject=f"Your Ticket for {self.event}",
-                    message=f"""
-                        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                                <div style="background-color: #4CAF50; color: #fff; padding: 20px; text-align: center;">
-                                    <h1 style="margin: 0; font-size: 24px;">Your Ticket for {self.event}</h1>
-                                </div>
-
-                                <div style="padding: 20px;">
-                                    <p style="font-size: 16px;">Hi <strong>{attende.full_name}</strong>,</p>
-                                    <p style="font-size: 16px;">You are officially registered as an attendee for <b>{self.event}</b>.</p>
-
-                                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">
-                                        <p><strong>Ticket Type:</strong> {attende.ticket_type}</p>
-                                        <p><strong>Booking ID:</strong> {self.name}</p>
-                                            <pre style="font-family: monospace; font-size: 8px; line-height: 8px;">
-                                            {self._ascii_qr}
-                                            </pre>
-                                    </div>
-
-                                    <p style="font-size: 16px;">Please keep this email safe. The QR code above will serve as your ticket at the event entrance.</p>
-                                    <p style="margin-top: 30px; font-size: 16px;">Best regards,<br><strong>Event Team</strong></p>
-                                </div>
-
-                                <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
-                                    <p style="margin: 0;">This is an automated email. Please do not reply.</p>
-                                </div>
-                            </div>
-
-                    """,
+                    message=f"You are registered for {self.event}. Booking ID: {self.name}",
                     attachments=[{
                         "fname": f"Booking_{self.name}_QR.png",
                         "fcontent": self._qr_bytes
@@ -271,33 +216,16 @@ class FestaBooking(Document):
             return
 
         subject = f"Reminder: Upcoming Event - {self.event}"
-        message = f"""
-          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                <div style="background-color: #FFA500; color: #fff; padding: 20px; text-align: center;">
-                    <h1 style="margin: 0; font-size: 24px;">Upcoming Event Reminder</h1>
-                </div>
-
-                <div style="padding: 20px;">
-                    <p style="font-size: 16px;">Hi <strong>{self.user}</strong>,</p>
-                    <p style="font-size: 16px;">This is a friendly reminder for your upcoming event booking. Here are the details:</p>
-
-                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                        <p><strong>Event:</strong> {self.event}</p>
-                        <p><strong>Booking ID:</strong> {self.name}</p>
-                    </div>
-
-                    <p style="font-size: 16px;">We look forward to seeing you at the event!</p>
-                    <p style="margin-top: 30px; font-size: 16px;">Thanks,<br><strong>Event Team</strong></p>
-                </div>
-
-                <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
-                    <p style="margin: 0;">This is an automated email. Please do not reply.</p>
-                </div>
-            </div>
-
-        """
-
+        message = f"Reminder for your booking {self.name}."
         frappe.sendmail(recipients=recipients, subject=subject, message=message)
+
+    @staticmethod
+    def send_reminders():
+        """Send reminders for all submitted bookings"""
+        bookings = frappe.get_all("Festa Booking", filters={"docstatus": 1}, pluck="name")
+        for name in bookings:
+            booking = frappe.get_doc("Festa Booking", name)
+            booking.send_reminder()
 
     # ----------------------------
     # Sales Order
@@ -339,37 +267,54 @@ class FestaBooking(Document):
         self.sales_order = so.name
         frappe.msgprint(f"Sales Order {so.name} created for Booking {self.name}")
 
+    # ----------------------------
+    # Document-Level Permissions
+    # ----------------------------
+    def has_permission(self, ptype, user=None):
+        user = user or frappe.session.user
 
-# ----------------------------
-# Module-level function for scheduled reminders
-# ----------------------------
-def send_reminders():
-    """Send reminders for all submitted bookings"""
-    bookings = frappe.get_all("Festa Booking", filters={"docstatus": 1}, pluck="name")
-    for name in bookings:
-        booking = frappe.get_doc("Festa Booking", name)
-        booking.send_reminder()
+        # Admin/System Manager has full access
+        if "Admin" in frappe.get_roles(user) or "System Manager" in frappe.get_roles(user):
+            return True
 
+        # Allow creation for new booking even if user not yet set
+        if ptype == "create" and not getattr(self, "user", None):
+            return True
 
-# *************************************
-# query permission
-# **************************************
-def get_bookings_for_user(doctype, txt, searchfield, start, page_len, filters):
-    import frappe
+        # Organizers can READ bookings for their events
+        if "Organizer" in frappe.get_roles(user):
+            if ptype == "read":
+                event_organizer = frappe.db.get_value("Festa Event", self.event, "organizer")
+                return event_organizer == user
+            return False
 
-    # Attendee sees only their own bookings
-    if "Attendee" in frappe.get_roles():
-        return frappe.get_all(
-            doctype,
-            filters={"user": frappe.session.user},
-            fields=["name", "event", "total_amount"]
-        )
+        # Attendees can manage their own bookings
+        if "Attendee" in frappe.get_roles(user):
+            if ptype in ("read", "write", "create"):
+                return self.user == user
+            return False
 
-    # Organizer sees all bookings
-    elif "Organizer" in frappe.get_roles():
-        return frappe.get_all(
-            doctype,
-            fields=["name", "event", "total_amount"]
-        )
+        return False
 
-    return []
+    # ----------------------------
+    # Optional: Validate Permissions on Actions
+    # ----------------------------
+    @staticmethod
+    def validate_booking_permissions(doc, method=None):
+        """
+        Hook for before_save or before_submit to enforce permissions.
+        """
+        user = frappe.session.user
+
+        if user == "Administrator" or "System Manager" in frappe.get_roles(user):
+            return
+
+        if "Attendee" in frappe.get_roles(user):
+            event = frappe.get_doc("Festa Event", doc.event)
+            if not event.is_published:
+                frappe.throw("Cannot book tickets for unpublished events")
+            if doc.user != user:
+                frappe.throw("You can only create bookings for yourself")
+
+        if "Organizer" in frappe.get_roles(user) and doc.is_new():
+            frappe.throw("Organizers cannot create bookings directly")

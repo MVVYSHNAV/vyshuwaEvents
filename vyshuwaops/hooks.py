@@ -14,6 +14,9 @@ required_apps = ["payments"]
 scheduler_events = {
     "daily": [
         "vyshuwaops.ticketing.doctype.festa_booking.festa_booking.send_reminders"
+    ],
+    "weekly": [
+        "vyshuwaops.ticketing.doctype.festa_event.festa_event.cleanup_expired_events"
     ]
 }
 
@@ -30,9 +33,24 @@ doc_events = {
 
 
 
-override_whitelisted_methods = {
-    "vyshuwaops.api.api.razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
-}
+# override_whitelisted_methods = {
+#     "vyshuwaops.api.api.razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
+# }
+
+# override_whitelisted_methods = {
+#     "vyshuwaops.vyshuwaops.api.signup.register_user": "vyshuwaops.vyshuwaops.api.signup.register_user"
+# }
+
+# hooks.py
+# permission_query_conditions = {
+#     "Festa Event": "vyshuwaops.vyshuwaops.doctype.festa_event.festa_event.get_permission_query_conditions",
+#     "Festa Booking": "vyshuwaops.ticketing.doctype.festa_booking.festa_booking.get_permission_query_conditions",
+# }
+
+# has_permission = {
+#     "Festa Event": "vyshuwaops.vyshuwaops.doctype.festa_event.festa_event.has_permission",
+#     "Festa Booking": "vyshuwaops.ticketing.doctype.festa_booking.festa_booking.has_permission",
+# }
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [    
