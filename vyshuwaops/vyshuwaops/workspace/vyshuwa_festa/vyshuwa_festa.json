@@ -5,7 +5,7 @@
    "label": "sales"
   }
  ],
- "content": "[{\"id\":\"t9d9N10HLK\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Festa</span>\",\"col\":12}},{\"id\":\"9upc--nsxL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"organiser Registration\",\"col\":4}},{\"id\":\"cg9lNvNUab\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"2-lzG0kfCJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create New Events\",\"col\":4}},{\"id\":\"SAX2GZzALV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Ticket Types\",\"col\":3}},{\"id\":\"Dax1Z7wK_t\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Events\",\"col\":4}},{\"id\":\"qOpR0Y5Y0F\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kISCLpkzlH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Ticket\",\"col\":3}},{\"id\":\"EuYCQZL5JN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Hosts\",\"col\":4}},{\"id\":\"L5sM4lEsaD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Booking\",\"col\":3}},{\"id\":\"747R9wtW4q\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"sales\",\"col\":4}},{\"id\":\"ewcxEvn89P\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PEPEVX1Xka\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Events this Month\",\"col\":4}},{\"id\":\"45B32WjfaS\",\"type\":\"chart\",\"data\":{\"chart_name\":\"sales\",\"col\":12}},{\"id\":\"1OHuMezk-2\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "content": "[{\"id\":\"45B32WjfaS\",\"type\":\"chart\",\"data\":{\"chart_name\":\"sales\",\"col\":12}},{\"id\":\"t9d9N10HLK\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Festa</span>\",\"col\":12}},{\"id\":\"9upc--nsxL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"organiser Registration\",\"col\":4}},{\"id\":\"cg9lNvNUab\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"2-lzG0kfCJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create New Events\",\"col\":3}},{\"id\":\"SAX2GZzALV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Ticket Types\",\"col\":3}},{\"id\":\"Dax1Z7wK_t\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Events\",\"col\":3}},{\"id\":\"qOpR0Y5Y0F\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kISCLpkzlH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Ticket\",\"col\":3}},{\"id\":\"EuYCQZL5JN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Hosts\",\"col\":3}},{\"id\":\"L5sM4lEsaD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Booking\",\"col\":3}},{\"id\":\"747R9wtW4q\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"sales\",\"col\":4}},{\"id\":\"ewcxEvn89P\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PEPEVX1Xka\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Events this Month\",\"col\":4}},{\"id\":\"1OHuMezk-2\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
  "creation": "2025-09-24 18:11:39.114187",
  "custom_blocks": [],
  "docstatus": 0,
@@ -18,7 +18,7 @@
  "is_hidden": 0,
  "label": "vyshuwa Festa",
  "links": [],
- "modified": "2025-09-30 12:21:24.330537",
+ "modified": "2025-10-06 18:38:27.546641",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "vyshuwa Festa",

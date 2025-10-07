@@ -176,32 +176,6 @@ def _process_payment_captured(payment_data):
         pr_doc.db_set("payment_entry", payment_entry.name)
         frappe.db.commit()
 
-
-        # Create Sales Invoice after Payment Entry
-        booking_name = token
-        try:
-            booking = frappe.get_doc("Festa Booking", booking_name)
-            if booking.docstatus == 0:
-                booking.submit()
-            if booking.sales_order:
-                sales_order = frappe.get_doc("Sales Order", booking.sales_order)
-                invoice = frappe.get_doc({
-                    "doctype": "Sales Invoice",
-                    "customer": sales_order.customer,
-                    "company": sales_order.company,
-                    "posting_date": nowdate(),
-                    "due_date": nowdate(),
-                    "items": [
-                        dict(item_code=i.item_code, qty=i.qty, rate=i.rate)
-                        for i in sales_order.items
-                    ],
-                })
-                invoice.insert(ignore_permissions=True)
-                invoice.submit()
-                frappe.logger().info(f"✅ Sales Invoice created: {invoice.name} for Booking {booking_name}")
-        except Exception:
-            frappe.log_error(frappe.get_traceback(), "Razorpay Sales Invoice Creation Error")
-
         frappe.logger().info(f"✅ Payment captured: {payment_id} | {amount} {currency}")
 
     except Exception:

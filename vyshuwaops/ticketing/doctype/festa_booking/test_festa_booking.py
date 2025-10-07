@@ -5,5 +5,27 @@
 from frappe.tests.utils import FrappeTestCase
 
 
+
+
 class TestFestaBooking(FrappeTestCase):
-	pass
+	def test_booking_submission_creates_payment_entry(self):
+		import frappe
+		# Ensure linked Festa Event exists
+		if not frappe.db.exists("Festa Event", "Test Event"):
+			frappe.get_doc({"doctype": "Festa Event", "title": "Test Event"}).insert(ignore_permissions=True)
+		# Ensure linked User exists
+		if not frappe.db.exists("User", "testuser@example.com"):
+			frappe.get_doc({"doctype": "User", "email": "testuser@example.com", "first_name": "Test"}).insert(ignore_permissions=True)
+
+		booking = frappe.get_doc({
+			"doctype": "Festa Booking",
+			"event": "Test Event",
+			"user": "testuser@example.com",
+			"total_amount": 1000,
+			"currency": "INR",
+		})
+		booking.insert(ignore_permissions=True)
+		booking.submit()
+
+		# Check if booking is submitted
+		self.assertEqual(booking.docstatus, 1)

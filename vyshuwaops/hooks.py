@@ -32,6 +32,14 @@ doc_events = {
 }
 
 
+web_methods = {
+    # Razorpay sends a POST request with the webhook payload
+    "POST": {
+        # The key is the URL path segment, the value is the full function path
+        "razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
+}
+}
+
 
 # override_whitelisted_methods = {
 #     "vyshuwaops.api.api.razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"

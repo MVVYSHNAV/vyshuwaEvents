@@ -7,6 +7,7 @@
  "field_order": [
   "section_break_rvck",
   "event",
+  "payment_status",
   "column_break_fofu",
   "user",
   "qr_code_url",
@@ -20,10 +21,18 @@
   "amended_from"
  ],
  "fields": [
-  {
-   "fieldname": "section_break_rvck",
-   "fieldtype": "Section Break"
-  },
+    {
+     "fieldname": "section_break_rvck",
+     "fieldtype": "Section Break"
+    },
+    {
+     "fieldname": "sales_order",
+     "fieldtype": "Link",
+     "label": "Sales Order",
+     "options": "Sales Order",
+     "read_only": 1,
+     "hidden": 1
+    },
   {
    "fieldname": "amended_from",
    "fieldtype": "Link",
@@ -94,6 +103,13 @@
    "fieldname": "qr_code_url",
    "fieldtype": "Attach Image",
    "label": "Qr Code URL"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "options": "Paid\nFailed\nPending"
   }
  ],
  "grid_page_length": 50,
@@ -114,7 +130,7 @@
    "link_fieldname": "customer"
   }
  ],
- "modified": "2025-09-29 15:22:42.270398",
+ "modified": "2025-10-07 12:14:48.864653",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Booking",
