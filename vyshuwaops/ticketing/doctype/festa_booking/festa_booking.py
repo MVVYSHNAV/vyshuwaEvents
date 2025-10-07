@@ -51,6 +51,7 @@ class FestaBooking(Document):
     # Submission
     # ----------------------------
 
+
     def on_submit(self):
         """Main workflow on booking submission"""
 

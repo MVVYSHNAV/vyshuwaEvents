@@ -18,7 +18,7 @@
  "is_hidden": 0,
  "label": "vyshuwa Festa",
  "links": [],
- "modified": "2025-10-06 18:38:27.546641",
+ "modified": "2025-10-07 18:58:23.996173",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "vyshuwa Festa",
@@ -86,7 +86,7 @@
    "doc_view": "List",
    "label": "organiser Registration",
    "type": "URL",
-   "url": "http://127.0.0.1:8001/organizer-registration/new"
+   "url": "http://localhost:8001/custom-signup-org"
   },
   {
    "color": "Green",
