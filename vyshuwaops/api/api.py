@@ -4,6 +4,45 @@ import hashlib
 import json
 from frappe.utils import nowdate
 
+
+
+@frappe.whitelist()
+def submit_festa_booking(booking_name):
+    """
+    Submits a draft Festa Booking document by its name.
+    """
+    if not booking_name:
+        frappe.throw("Festa Booking name is required.")
+
+    try:
+        doc = frappe.get_doc("Festa Booking", booking_name)
+
+        if doc.docstatus == 1:
+            return {
+                "message": f"Festa Booking {booking_name} is already submitted.",
+                "status": "already_submitted"
+            }
+        
+        if doc.docstatus == 2:
+             frappe.throw(f"Festa Booking {booking_name} is cancelled and cannot be submitted.")
+             
+        # Submission logic
+        doc.submit()
+        frappe.db.commit()
+
+        frappe.msgprint(f"🎉 Festa Booking {booking_name} submitted successfully.")
+
+        return {
+            "name": doc.name,
+            "status": "success",
+            "message": "Festa Booking submitted."
+        }
+
+    except frappe.DoesNotExistError:
+        frappe.throw(f"Festa Booking {booking_name} not found.")
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), f"Festa API: Submit Booking Error for {booking_name}")
+        frappe.throw("Internal error during booking submission.")
 # ------------------------------------------------
 # Public API: Create Invoice + Payment Entry
 # ------------------------------------------------

@@ -31,6 +31,10 @@ doc_events = {
 
 }
 
+app_include_hooks = {
+    "submit_festa_booking": "vyshuwaops.api.api.submit_festa_booking"
+}
+
 web_methods = {
     # Razorpay sends a POST request with the webhook payload
     "POST": {

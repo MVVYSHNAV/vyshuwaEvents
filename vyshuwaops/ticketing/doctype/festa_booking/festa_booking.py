@@ -89,6 +89,21 @@ class FestaBooking(Document):
         except Exception as e:
             frappe.log_error(frappe.get_traceback(), "FestaBooking Invoice/Payment Creation Error")
             frappe.msgprint(f"⚠️ Invoice/Payment creation failed: {str(e)}")
+            
+    def after_insert(self):
+        """
+        Automatically submit the document immediately after it's created 
+        by the Web Form (since docstatus is 0 after insert).
+        """
+        if self.docstatus == 0:
+            try:
+                # Submitting the document triggers the on_submit hook
+                self.submit()
+                frappe.logger().info(f"Festa Booking {self.name} auto-submitted after Web Form insert.")
+            except Exception:
+                # Log any submission errors but allow the insert to complete
+                frappe.log_error(frappe.get_traceback(),f"Festa Booking auto-submit failed after insert for {self.name}")
+ 
 
     # ----------------------------
     # Ticket generation

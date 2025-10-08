@@ -27,6 +27,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "sales_order",
    "fieldtype": "Link",
    "hidden": 1,
@@ -106,6 +107,7 @@
    "label": "Qr Code URL"
   },
   {
+   "allow_on_submit": 1,
    "default": "Pending",
    "fieldname": "payment_status",
    "fieldtype": "Select",
@@ -135,7 +137,7 @@
    "link_fieldname": "customer"
   }
  ],
- "modified": "2025-10-08 19:56:16.929348",
+ "modified": "2025-10-08 22:40:58.973316",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Booking",
