@@ -1,0 +1,68 @@
+{
+ "add_total_row": 1,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2025-10-08 13:07:11.941139",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [
+  {
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "label": "Event",
+   "mandatory": 0,
+   "options": "Festa Event",
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "mandatory": 0,
+   "options": "paid \nfailed",
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "mandatory": 0,
+   "options": "User",
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Amount",
+   "mandatory": 0,
+   "options": "currency",
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2025-10-08 14:58:43.949844",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Ticket",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT\n  event AS Event,\n  payment_status AS \"Payment Status\",\n  user AS User,\n  qr_code_url AS \"QR Code URL\",\n  (SELECT COUNT(*) FROM `tabFesta Attende Booking` WHERE parent = fb.name) AS Attendees,\n  total_amount AS \"Total Amount\",\n  currency AS Currency\nFROM\n  `tabFesta Booking` fb\nORDER BY\n  event, user",
+ "ref_doctype": "Festa Booking",
+ "report_name": "Ticket",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "Admin"
+  },
+  {
+   "role": "Organizer"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "timeout": 0
+}

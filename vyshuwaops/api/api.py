@@ -17,6 +17,8 @@ def create_invoice_and_payment(booking_name):
             frappe.throw(f"No Sales Order linked with Booking {booking_name}")
 
         sales_order = frappe.get_doc("Sales Order", booking.sales_order)
+
+        # Create Sales Invoice
         invoice = frappe.get_doc({
             "doctype": "Sales Invoice",
             "customer": sales_order.customer,
@@ -31,10 +33,16 @@ def create_invoice_and_payment(booking_name):
         invoice.insert(ignore_permissions=True)
         invoice.submit()
 
+        # Get mode of payment (fallback to Cash)
         try:
-            mode_of_payment = frappe.db.get_single_value("Accounts Settings", "default_mode_of_payment")
+            mode_of_payment = (
+                frappe.db.get_value("Company", sales_order.company, "default_mode_of_payment")
+                or "Cash"
+            )
         except Exception:
             mode_of_payment = "Cash"
+
+        # Create Payment Entry
         payment_entry = frappe.get_doc({
             "doctype": "Payment Entry",
             "payment_type": "Receive",
@@ -50,15 +58,33 @@ def create_invoice_and_payment(booking_name):
                 "reference_doctype": "Sales Invoice",
                 "reference_name": invoice.name,
                 "total_amount": invoice.grand_total,
-                "outstanding_amount": invoice.outstanding_amount,
+                "outstanding_amount": invoice.grand_total,
                 "allocated_amount": invoice.grand_total,
             }],
         })
         payment_entry.insert(ignore_permissions=True)
         payment_entry.submit()
 
+        # Update booking payment status
+        # Update payment status
         booking.db_set("payment_status", "Paid")
-        frappe.msgprint(f"Invoice {invoice.name} and Payment Entry {payment_entry.name} created for Booking {booking.name}")
+        booking.reload()
+
+        # Submit after successful payment
+        if booking.docstatus == 0:
+            try:
+                booking.submit(ignore_permissions=True)
+                frappe.logger().info(f"🎉 Festa Booking {booking.name} submitted successfully.")
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), f"Festa Booking Submit Error: {booking.name}")
+                frappe.msgprint(f"⚠️ Booking created but could not be submitted: {str(e)}")
+
+
+        frappe.msgprint(
+            f"Invoice {invoice.name} and Payment Entry {payment_entry.name} created. "
+            f"Booking {booking.name} submitted successfully."
+        )
+
         return {
             "invoice": invoice.name,
             "payment_entry": payment_entry.name,
@@ -68,6 +94,7 @@ def create_invoice_and_payment(booking_name):
     except Exception:
         frappe.log_error(frappe.get_traceback(), "FestaAPI: create_invoice_and_payment")
         frappe.throw("Internal error in invoice/payment creation")
+
 
 
 # ------------------------------------------------
@@ -131,58 +158,79 @@ def _handle_razorpay_event(event):
     except Exception:
         frappe.log_error(frappe.get_traceback(), "Razorpay Event Handler Error")
 
+# =====================================================
+#  PAYMENT CAPTURE PROCESSOR
+# =====================================================
 def _process_payment_captured(payment_data):
-    """Create Payment Request and Payment Entry on successful payment."""
+    """Triggered when Razorpay sends payment.captured event."""
     try:
         payment_id = payment_data.get("id")
-        order_id = payment_data.get("order_id")
-        amount = (payment_data.get("amount") or 0) / 100
-        currency = payment_data.get("currency") or "INR"
+        amount = float(payment_data.get("amount", 0)) / 100.0
         email = payment_data.get("email")
-        contact = payment_data.get("contact")
-        description = payment_data.get("description")
-        notes = payment_data.get("notes", {})
+        status = payment_data.get("status")
+        token = (payment_data.get("notes") or {}).get("booking_id")
 
-        token = notes.get("token") or _extract_token_from_description(description)
+        frappe.logger().info(f"💰 Processing payment.captured for Booking {token}")
 
-        existing_entry = frappe.db.exists("Payment Entry", {"reference_no": payment_id})
-        if existing_entry:
-            frappe.logger().info(f"Payment Entry already exists for {payment_id}")
+        # ------------------------------
+        # Validate Booking Reference
+        # ------------------------------
+        if not token:
+            frappe.logger().error(f"❌ No booking_id found in payment notes for payment {payment_id}")
             return
 
-        pr_name = frappe.db.get_value("Payment Request", {"reference_name": token})
-        if not pr_name:
-            pr_name = create_payment_request(token, email, amount, currency)
-        pr_doc = frappe.get_doc("Payment Request", pr_name)
+        if status != "captured":
+            frappe.logger().info(f"⏸ Payment {payment_id} not captured (status: {status})")
+            return
 
+        booking = frappe.get_doc("Festa Booking", token)
+        if not booking:
+            frappe.logger().error(f"❌ Festa Booking not found: {token}")
+            return
+
+        # =================================================
+        # 1️⃣ Create Payment Entry
+        # =================================================
         payment_entry = frappe.new_doc("Payment Entry")
         payment_entry.payment_type = "Receive"
+        payment_entry.party_type = "Customer"
+        payment_entry.party = booking.customer or email
         payment_entry.posting_date = nowdate()
         payment_entry.mode_of_payment = "Razorpay"
-        payment_entry.party_type = "Customer"
-        payment_entry.party = pr_doc.party
-        payment_entry.company = pr_doc.company
-        payment_entry.reference_no = payment_id
-        payment_entry.reference_date = nowdate()
+        payment_entry.company = booking.company
         payment_entry.paid_amount = amount
         payment_entry.received_amount = amount
-        payment_entry.currency = currency
-        payment_entry.paid_to = frappe.db.get_value("Company", pr_doc.company, "default_receivable_account")
-
+        payment_entry.paid_to = (
+            frappe.db.get_value("Company", booking.company, "default_bank_account")
+            or frappe.db.get_value("Company", booking.company, "default_cash_account")
+        )
+        payment_entry.references = [{
+            "reference_doctype": "Festa Booking",
+            "reference_name": booking.name,
+            "allocated_amount": amount
+        }]
         payment_entry.insert(ignore_permissions=True)
         payment_entry.submit()
+        frappe.logger().info(f"✅ Payment Entry created: {payment_entry.name}")
 
-        pr_doc.db_set("status", "Paid")
-        pr_doc.db_set("payment_entry", payment_entry.name)
-        frappe.db.commit()
+        # =================================================
+        # 2️⃣ Update Status and Submit Festa Booking 
+        # (Submission now happens AFTER payment status is set to Paid)
+        # =================================================
+        # Update fields
+        booking.db_set("payment_status", "Paid")
+        booking.db_set("razorpay_payment_id", payment_id)
+        frappe.db.commit() # Commit the payment status change
 
+        # Submit the booking if it was in Draft status (docstatus == 0)
+        if booking.docstatus == 0:
+            booking.submit()
+            frappe.logger().info(f"🎉 Festa Booking {booking.name} submitted successfully after payment.")
 
-        # Create Sales Invoice after Payment Entry
-        booking_name = token
+        # =================================================
+        # 3️⃣ Optional: Create Sales Invoice automatically
+        # =================================================
         try:
-            booking = frappe.get_doc("Festa Booking", booking_name)
-            if booking.docstatus == 0:
-                booking.submit()
             if booking.sales_order:
                 sales_order = frappe.get_doc("Sales Order", booking.sales_order)
                 invoice = frappe.get_doc({
@@ -192,20 +240,23 @@ def _process_payment_captured(payment_data):
                     "posting_date": nowdate(),
                     "due_date": nowdate(),
                     "items": [
-                        dict(item_code=i.item_code, qty=i.qty, rate=i.rate)
-                        for i in sales_order.items
+                        {
+                            "item_code": i.item_code,
+                            "qty": i.qty,
+                            "rate": i.rate
+                        } for i in sales_order.items
                     ],
                 })
                 invoice.insert(ignore_permissions=True)
                 invoice.submit()
-                frappe.logger().info(f"✅ Sales Invoice created: {invoice.name} for Booking {booking_name}")
+                frappe.logger().info(f"🧾 Sales Invoice {invoice.name} created for Booking {booking.name}")
         except Exception:
             frappe.log_error(frappe.get_traceback(), "Razorpay Sales Invoice Creation Error")
 
-        frappe.logger().info(f"✅ Payment captured: {payment_id} | {amount} {currency}")
-
     except Exception:
-        frappe.log_error(frappe.get_traceback(), "Razorpay Payment Capture Error")
+        frappe.log_error(frappe.get_traceback(), "Razorpay Payment Captured Handler Error")
+
+
 
 def _process_payment_failed(payment_data):
     """Logs payment failure event."""
@@ -273,4 +324,3 @@ def _extract_token_from_description(description):
     if len(parts) >= 2:
         return parts[-1].strip()
     return None
-

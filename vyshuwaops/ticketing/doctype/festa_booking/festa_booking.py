@@ -10,6 +10,26 @@ from vyshuwaops.api.api import create_invoice_and_payment
 
 
 class FestaBooking(Document):
+    # begin: auto-generated types
+    # This code is auto-generated. Do not modify anything in this block.
+
+    from typing import TYPE_CHECKING
+
+    if TYPE_CHECKING:
+        from frappe.types import DF
+        from vyshuwaops.ticketing.doctype.festa_attende_booking.festa_attende_booking import FestaAttendeBooking
+
+        amended_from: DF.Link | None
+        attendes: DF.Table[FestaAttendeBooking]
+        currency: DF.Link | None
+        event: DF.Link
+        payment_status: DF.Literal["Paid", "Failed", "Pending"]
+        qr_code_url: DF.AttachImage | None
+        sales_order: DF.Link | None
+        total_amount: DF.Currency
+        user: DF.Link
+    # end: auto-generated types
+
     # ----------------------------
     # Hooks
     # ----------------------------
@@ -26,11 +46,9 @@ class FestaBooking(Document):
     def set_currency(self):
         if getattr(self, "attendes", None) and len(self.attendes) > 0:
             first_attendee = self.attendes[0]
-            # Check if attendee has currency attribute and it is set
             if hasattr(first_attendee, "currency") and first_attendee.currency:
                 self.currency = first_attendee.currency
                 return
-        # fallback to system default currency
         self.currency = frappe.db.get_default("currency")
 
     def set_total(self):
@@ -51,7 +69,6 @@ class FestaBooking(Document):
     # Submission
     # ----------------------------
 
-
     def on_submit(self):
         """Main workflow on booking submission"""
 
@@ -59,17 +76,12 @@ class FestaBooking(Document):
         if not hasattr(self, 'sales_order') or not self.sales_order:
             self.create_sales_order()
 
-        # Enqueue ticket generation (background job)
-        frappe.enqueue(
-            'vyshuwaops.ticketing.doctype.festa_booking.festa_booking.FestaBooking.generate_tickets_bg',
-            booking_name=self.name
-        )
+        # Generate tickets immediately
+        self.generate_tickets()
 
-        # Enqueue QR code generation and email sending (background job)
-        frappe.enqueue(
-            'vyshuwaops.ticketing.doctype.festa_booking.festa_booking.FestaBooking.generate_qr_and_send_email_bg',
-            booking_name=self.name
-        )
+        # Generate QR code + send emails immediately
+        self.generate_qr_code()
+        self.send_booking_emails()
 
         # Attempt to create invoice and payment
         try:
@@ -79,13 +91,8 @@ class FestaBooking(Document):
             frappe.msgprint(f"⚠️ Invoice/Payment creation failed: {str(e)}")
 
     # ----------------------------
-    # Background job: Tickets
+    # Ticket generation
     # ----------------------------
-
-    @staticmethod
-    def generate_tickets_bg(booking_name):
-        booking = frappe.get_doc("Festa Booking", booking_name)
-        booking.generate_tickets()
 
     def generate_tickets(self):
         if not getattr(self, "attendes", None):
@@ -107,16 +114,6 @@ class FestaBooking(Document):
             ticket.attende_name = attende_name
             ticket.insert(ignore_permissions=True)
             ticket.submit()
-
-    # ----------------------------
-    # Background job: QR + Emails
-    # ----------------------------
-
-    @staticmethod
-    def generate_qr_and_send_email_bg(booking_name):
-        booking = frappe.get_doc("Festa Booking", booking_name)
-        booking.generate_qr_code()
-        booking.send_booking_emails()
 
     # ----------------------------
     # QR code generation
@@ -164,13 +161,12 @@ class FestaBooking(Document):
         self.db_set("qr_code_url", get_url(file_doc.file_url))
 
     # ----------------------------
-    # Emails
+    # Email sending
     # ----------------------------
 
     def send_booking_emails(self):
         recipients = []
 
-        # Booking owner email resolution
         booking_email = self.user
         if booking_email and "@" not in booking_email:
             booking_email = frappe.db.get_value("User", self.user, "email")
@@ -185,25 +181,16 @@ class FestaBooking(Document):
                         <div style="background-color: #2E86C1; color: #fff; padding: 20px; text-align: center;">
                             <h1 style="margin: 0; font-size: 24px;">Booking Confirmed</h1>
                         </div>
-
                         <div style="padding: 20px;">
                             <p style="font-size: 16px;">Hi <strong>{self.user}</strong>,</p>
                             <p style="font-size: 16px;">Your booking for <strong>{self.event}</strong> is confirmed. Here are your details:</p>
-
                             <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
                                 <p><strong>Booking ID:</strong> {self.name}</p>
                                 <p><strong>Total Amount:</strong> {self.total_amount} {self.currency}</p>
                             </div>
-
-                            <pre style="font-family: monospace; font-size: 8px; line-height: 8px;">
-                                {self._ascii_qr}
-                                </pre>
-
                             <p style="font-size: 16px;">Please keep this QR code safe. You will need it to enter the event.</p>
-
                             <p style="margin-top: 30px; font-size: 16px;">Thanks,<br><strong>Event Team</strong></p>
                         </div>
-
                         <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
                             <p style="margin: 0;">This is an automated email. Please do not reply.</p>
                         </div>
@@ -225,31 +212,23 @@ class FestaBooking(Document):
                     subject=f"Your Ticket for {self.event}",
                     message=f"""
                         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                                <div style="background-color: #4CAF50; color: #fff; padding: 20px; text-align: center;">
-                                    <h1 style="margin: 0; font-size: 24px;">Your Ticket for {self.event}</h1>
-                                </div>
-
-                                <div style="padding: 20px;">
-                                    <p style="font-size: 16px;">Hi <strong>{attende.full_name}</strong>,</p>
-                                    <p style="font-size: 16px;">You are officially registered as an attendee for <b>{self.event}</b>.</p>
-
-                                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">
-                                        <p><strong>Ticket Type:</strong> {attende.ticket_type}</p>
-                                        <p><strong>Booking ID:</strong> {self.name}</p>
-                                            <pre style="font-family: monospace; font-size: 8px; line-height: 8px;">
-                                            {self._ascii_qr}
-                                            </pre>
-                                    </div>
-
-                                    <p style="font-size: 16px;">Please keep this email safe. The QR code above will serve as your ticket at the event entrance.</p>
-                                    <p style="margin-top: 30px; font-size: 16px;">Best regards,<br><strong>Event Team</strong></p>
-                                </div>
-
-                                <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
-                                    <p style="margin: 0;">This is an automated email. Please do not reply.</p>
-                                </div>
+                            <div style="background-color: #4CAF50; color: #fff; padding: 20px; text-align: center;">
+                                <h1 style="margin: 0; font-size: 24px;">Your Ticket for {self.event}</h1>
                             </div>
-
+                            <div style="padding: 20px;">
+                                <p style="font-size: 16px;">Hi <strong>{attende.full_name}</strong>,</p>
+                                <p style="font-size: 16px;">You are officially registered as an attendee for <b>{self.event}</b>.</p>
+                                <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                                    <p><strong>Ticket Type:</strong> {attende.ticket_type}</p>
+                                    <p><strong>Booking ID:</strong> {self.name}</p>
+                                </div>
+                                <p style="font-size: 16px;">Please keep this email safe. The QR code above will serve as your ticket at the event entrance.</p>
+                                <p style="margin-top: 30px; font-size: 16px;">Best regards,<br><strong>Event Team</strong></p>
+                            </div>
+                            <div style="background-color: #f0f0f0; color: #555; text-align: center; padding: 15px; font-size: 12px;">
+                                <p style="margin: 0;">This is an automated email. Please do not reply.</p>
+                            </div>
+                        </div>
                     """,
                     attachments=[{
                         "fname": f"Booking_{self.name}_QR.png",
@@ -275,18 +254,15 @@ class FestaBooking(Document):
         if not getattr(self, "attendes", None) or len(self.attendes) == 0:
             frappe.throw("No attendees found to create Sales Order.")
 
-        # Get user email if available
         user_email = None
         if self.user:
             user_email = frappe.db.get_value("User", self.user, "email")
 
-        # Try to get customer based on email
         customer_name = None
         if user_email:
             customer_name = frappe.db.get_value("Customer", {"email_id": user_email}, "name")
 
         if not customer_name:
-            # Create new Customer if missing
             customer = frappe.new_doc("Customer")
             customer.customer_name = (self.user or "Guest").replace("@", "_")
             if user_email:

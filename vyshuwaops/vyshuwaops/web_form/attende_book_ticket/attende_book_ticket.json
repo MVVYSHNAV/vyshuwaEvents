@@ -12,8 +12,8 @@
  "anonymous": 0,
  "apply_document_permissions": 1,
  "banner_image": "/files/Generated_Image_September_26__2025_-_7_50PM-removebg-preview.png",
- "button_label": "Save",
- "client_script": "frappe.web_form.on('attendes', {\n    ticket: function(frm, cdt, cdn) {\n        let row = locals[cdt][cdn];\n        if (row.ticket) {\n            frappe.db.get_value('Festa Ticket Type', row.ticket, ['price', 'currency'], (r) => {\n                if (r && r.price) {\n                    row.price = flt(r.price);\n                    row.currency = r.currency || frappe.web_form.get_value('currency');\n                    frappe.web_form.refresh_field('attendes');\n                    update_total_amount();\n                }\n            });\n        } else {\n            row.price = 0;\n            frappe.web_form.refresh_field('attendees');\n            update_total_amount();\n        }\n    }\n});\n",
+ "button_label": "Submit",
+ "client_script": "frappe.web_form.after_load = () => {\n    const urlParams = new URLSearchParams(window.location.search);\n\n    const eventValue = urlParams.get('event');\n    if (eventValue) {\n        frappe.web_form.set_value('event', eventValue);\n    }\n\n    const currencyValue = urlParams.get('currency');\n    if (currencyValue) {\n        frappe.web_form.set_value('currency', currencyValue);\n    }\n};\n",
  "condition_json": "[]",
  "creation": "2025-09-26 20:16:16.744340",
  "currency": "INR",
@@ -26,7 +26,7 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 0,
- "modified": "2025-10-06 13:45:32.941387",
+ "modified": "2025-10-08 19:10:11.164577",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "attende-book-ticket",
@@ -41,6 +41,7 @@
  "show_sidebar": 0,
  "success_message": "your booking has been completed",
  "success_title": "success",
+ "success_url": "/payment-successfull",
  "title": "Attende Book TIcket",
  "web_form_fields": [
   {
@@ -55,21 +56,6 @@
    "precision": "",
    "read_only": 0,
    "reqd": 1,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
-   "default": "INR",
-   "fieldname": "currency",
-   "fieldtype": "Link",
-   "hidden": 0,
-   "label": "Currency",
-   "max_length": 0,
-   "max_value": 0,
-   "options": "Currency",
-   "precision": "",
-   "read_only": 0,
-   "reqd": 0,
    "show_in_filter": 0
   },
   {

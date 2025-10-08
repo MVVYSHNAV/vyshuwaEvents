@@ -31,7 +31,6 @@ doc_events = {
 
 }
 
-
 web_methods = {
     # Razorpay sends a POST request with the webhook payload
     "POST": {
@@ -39,15 +38,6 @@ web_methods = {
         "razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
 }
 }
-
-
-# override_whitelisted_methods = {
-#     "vyshuwaops.api.api.razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
-# }
-
-# override_whitelisted_methods = {
-#     "vyshuwaops.vyshuwaops.api.signup.register_user": "vyshuwaops.vyshuwaops.api.signup.register_user"
-# }
 
 
 permission_query_conditions = {
@@ -59,6 +49,28 @@ has_permission = {
     "Festa Event": "vyshuwaops.api.permission.has_permission",
     "Festa Booking": "vyshuwaops.api.permission.has_permission",
 }
+
+# app_include_js = [
+#     "/assets/vyshuwaops/js/custom_webform_script.js"
+# ]
+
+# doctype_js = {
+#     "Web Form": "public/js/web_form_custom.js"
+# }
+
+
+
+
+
+# override_whitelisted_methods = {
+#     "vyshuwaops.api.api.razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
+# }
+
+# override_whitelisted_methods = {
+#     "vyshuwaops.vyshuwaops.api.signup.register_user": "vyshuwaops.vyshuwaops.api.signup.register_user"
+# }
+
+
 
 
 # Each item in the list will be shown as an app in the apps page

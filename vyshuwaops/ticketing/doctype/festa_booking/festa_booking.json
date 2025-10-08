@@ -18,21 +18,22 @@
   "column_break_dlgu",
   "currency",
   "section_break_ecia",
-  "amended_from"
+  "amended_from",
+  "sales_order"
  ],
  "fields": [
-    {
-     "fieldname": "section_break_rvck",
-     "fieldtype": "Section Break"
-    },
-    {
-     "fieldname": "sales_order",
-     "fieldtype": "Link",
-     "label": "Sales Order",
-     "options": "Sales Order",
-     "read_only": 1,
-     "hidden": 1
-    },
+  {
+   "fieldname": "section_break_rvck",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Sales Order",
+   "options": "Sales Order",
+   "read_only": 1
+  },
   {
    "fieldname": "amended_from",
    "fieldtype": "Link",
@@ -122,15 +123,19 @@
    "link_fieldname": "booking"
   },
   {
-   "link_doctype": "Payment Request",
-   "link_fieldname": "company"
+   "link_doctype": "Payment Entry",
+   "link_fieldname": "party_type"
   },
   {
    "link_doctype": "Sales Order",
    "link_fieldname": "customer"
+  },
+  {
+   "link_doctype": "Sales Invoice",
+   "link_fieldname": "customer"
   }
  ],
- "modified": "2025-10-07 12:14:48.864653",
+ "modified": "2025-10-08 19:56:16.929348",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Booking",
@@ -197,12 +202,18 @@
    "write": 1
   }
  ],
+ "read_only": 1,
  "row_format": "Dynamic",
  "search_fields": "event,total_amount",
  "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
+ "states": [
+  {
+   "color": "Purple",
+   "title": "Payment Status"
+  }
+ ],
  "title_field": "user",
  "track_changes": 1,
  "track_seen": 1,
