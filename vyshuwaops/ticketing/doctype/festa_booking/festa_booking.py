@@ -5,7 +5,6 @@ import qrcode
 import frappe
 from frappe.model.document import Document
 from frappe.utils import nowdate, get_url
-
 from vyshuwaops.api.api import create_invoice_and_payment
 
 
@@ -92,18 +91,19 @@ class FestaBooking(Document):
             
     def after_insert(self):
         """
-        Automatically submit the document immediately after it's created 
-        by the Web Form (since docstatus is 0 after insert).
+        Auto-submit after Web Form creation
         """
         if self.docstatus == 0:
             try:
-                # Submitting the document triggers the on_submit hook
-                self.submit()
-                frappe.logger().info(f"Festa Booking {self.name} auto-submitted after Web Form insert.")
+                # Use frappe.call to avoid circular imports
+                frappe.enqueue(
+                    'vyshuwaops.api.api.submit_festa_booking',
+                    booking_name=self.name,
+                    queue='short'
+                )
             except Exception:
-                # Log any submission errors but allow the insert to complete
-                frappe.log_error(frappe.get_traceback(),f"Festa Booking auto-submit failed after insert for {self.name}")
- 
+                frappe.log_error(frappe.get_traceback(), f"Festa Booking auto-submit queue failed: {self.name}")
+    
 
     # ----------------------------
     # Ticket generation
