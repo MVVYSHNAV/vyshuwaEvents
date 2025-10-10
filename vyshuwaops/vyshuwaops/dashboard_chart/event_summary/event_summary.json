@@ -1,0 +1,37 @@
+{
+ "chart_name": "Event Summary",
+ "chart_type": "Report",
+ "creation": "2025-10-10 19:02:21.285631",
+ "currency": "INR",
+ "custom_options": "{\n  \"x_field\": \"event\",\n  \"chart_type\": \"Line\",\n  \"y_axis_fields\": [\n    {\n      \"y_field\": \"total_tickets_sold\",\n      \"name\": \"Tickets Sold\",\n      \"color\": \"#22C55E\",\n      \"stroke_width\": 3,\n      \"fill\": \"rgba(34, 197, 94, 0.15)\",\n      \"show_dots\": true,\n      \"dot_size\": 5\n    },\n    {\n      \"y_field\": \"total_revenue\",\n      \"name\": \"Revenue (\u20b9)\",\n      \"color\": \"#3B82F6\",\n      \"stroke_width\": 3,\n      \"fill\": \"rgba(59, 130, 246, 0.1)\",\n      \"show_dots\": true,\n      \"dot_size\": 5\n    }\n  ],\n  \"y_fields\": [\"total_tickets_sold\", \"total_revenue\"],\n  \"colors\": [\"#22C55E\", \"#3B82F6\"],\n  \"line_options\": {\n    \"curve\": \"smooth\"\n  },\n  \"axis_options\": {\n    \"x_axis_label\": \"Event\",\n    \"y_axis_label\": \"Performance Metrics\"\n  },\n  \"tooltip_options\": {\n    \"show_total\": true,\n    \"background_color\": \"#1E293B\",\n    \"text_color\": \"#F8FAFC\",\n    \"border_radius\": 6,\n    \"shadow\": true\n  },\n  \"legend\": {\n    \"position\": \"bottom\",\n    \"align\": \"center\",\n    \"label_color\": \"#475569\"\n  },\n  \"grid\": {\n    \"visible\": true,\n    \"color\": \"#E2E8F0\"\n  }\n}\n",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{\"payment_status\":\"Paid\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-10-10 19:07:46.818805",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Event Summary",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Event-Level Summary",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "event",
+ "y_axis": [
+  {
+   "y_field": "total_tickets_sold"
+  },
+  {
+   "y_field": "total_revenue"
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "chart_name": "Payment Status Summary",
+ "chart_type": "Report",
+ "creation": "2025-10-10 19:20:20.905297",
+ "currency": "INR",
+ "custom_options": "{\n  \"x_field\": \"payment_status\",\n  \"chart_type\": \"Pie\",\n  \"y_axis_fields\": [\n    {\n      \"y_field\": \"tickets_sold\",\n      \"name\": \"Tickets Sold\",\n      \"color_palette\": [\"#3B82F6\", \"#10B981\", \"#F59E0B\", \"#EF4444\"],\n      \"show_percentage\": true,\n      \"show_label\": true,\n      \"label_color\": \"#1E293B\",\n      \"label_font_size\": 14\n    },\n    {\n      \"y_field\": \"total_bookings\",\n      \"name\": \"Total Bookings\",\n      \"color_palette\": [\"#6366F1\", \"#14B8A6\", \"#F97316\", \"#DC2626\"],\n      \"show_percentage\": true,\n      \"show_label\": true,\n      \"label_color\": \"#1E293B\",\n      \"label_font_size\": 14\n    }\n  ],\n  \"y_fields\": [\"tickets_sold\", \"total_bookings\"],\n  \"tooltip_options\": {\n    \"background_color\": \"#1E293B\",\n    \"text_color\": \"#F8FAFC\",\n    \"border_radius\": 8,\n    \"shadow\": true,\n    \"format_tooltip\": \"function(value, field) { return field === 'tickets_sold' ? value + ' tickets' : value + ' bookings'; }\"\n  },\n  \"legend\": {\n    \"position\": \"right\",\n    \"align\": \"center\",\n    \"label_color\": \"#474469\",\n    \"font_size\": 13\n  },\n  \"donut\": false,\n  \"show_total\": true\n}\n",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-10-10 19:38:55.348311",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Payment Status Summary",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Payment Status Summary",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Pie",
+ "use_report_chart": 0,
+ "x_field": "payment_status",
+ "y_axis": [
+  {
+   "y_field": "tickets_sold"
+  },
+  {
+   "y_field": "total_bookings"
+  }
+ ]
+}

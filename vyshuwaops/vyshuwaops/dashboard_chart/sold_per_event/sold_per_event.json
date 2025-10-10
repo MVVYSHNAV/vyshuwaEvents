@@ -1,0 +1,35 @@
+{
+ "chart_name": "Sold per Event",
+ "chart_type": "Report",
+ "creation": "2025-10-10 19:58:23.084444",
+ "currency": "INR",
+ "custom_options": "{\"x_field\": \"event\", \"chart_type\": \"Donut\", \"y_axis_fields\": [{\"idx\": 1, \"__islocal\": true, \"y_field\": \"tickets_sold\", \"color\": \"#4bad5e\", \"name\": \"row 1\"}], \"y_fields\": [\"tickets_sold\"], \"colors\": [\"#4bad5e\"]}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-10-10 19:58:23.110182",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Sold per Event",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Tickets Sold per Event",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Donut",
+ "use_report_chart": 0,
+ "x_field": "event",
+ "y_axis": [
+  {
+   "color": "#4bad5e",
+   "y_field": "tickets_sold"
+  }
+ ]
+}

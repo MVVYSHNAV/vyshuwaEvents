@@ -1,0 +1,37 @@
+{
+ "chart_name": "Event Sales In Date Range",
+ "chart_type": "Report",
+ "creation": "2025-10-10 19:25:08.883144",
+ "currency": "INR",
+ "custom_options": "{\n  \"x_field\": \"event\",\n  \"chart_type\": \"Bar\",\n  \"y_axis_fields\": [\n    {\n      \"y_field\": \"tickets_sold\",\n      \"name\": \"Tickets Sold\",\n      \"color\": \"#3B82F6\",\n      \"bar_width\": 18,\n      \"show_values\": true,\n      \"value_color\": \"#1E293B\",\n      \"value_font_size\": 12\n    },\n    {\n      \"y_field\": \"total_amount\",\n      \"name\": \"Total Revenue\",\n      \"color\": \"#F97316\",\n      \"bar_width\": 18,\n      \"show_values\": true,\n      \"value_color\": \"#1E293B\",\n      \"value_font_size\": 12\n    }\n  ],\n  \"y_fields\": [\"tickets_sold\", \"total_amount\"],\n  \"colors\": [\"#3B82F6\", \"#F97316\"],\n  \"axis_options\": {\n    \"x_axis_label\": \"Event\",\n    \"y_axis_label\": \"Count / Revenue\",\n    \"x_axis_rotate\": 45,\n    \"shorten_numbers\": true\n  },\n  \"tooltip_options\": {\n    \"background_color\": \"#1E293B\",\n    \"text_color\": \"#F8FAFC\",\n    \"border_radius\": 6,\n    \"shadow\": true,\n    \"format_tooltip_y\": \"function(value, field) { return field === 'total_amount' ? '\u20b9' + value : value + ' tickets'; }\"\n  },\n  \"legend\": {\n    \"position\": \"top\",\n    \"align\": \"center\",\n    \"label_color\": \"#475569\",\n    \"font_size\": 13\n  },\n  \"grid\": {\n    \"visible\": true,\n    \"color\": \"#E2E8F0\"\n  },\n  \"max_rows\": 20\n}\n",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{\"from_date\":\"2025-09-01\",\"to_date\":\"2025-10-30\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-10-10 19:26:13.019944",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Event Sales In Date Range",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Event Sales in Date Range",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "event",
+ "y_axis": [
+  {
+   "y_field": "tickets_sold"
+  },
+  {
+   "y_field": "total_amount"
+  }
+ ]
+}

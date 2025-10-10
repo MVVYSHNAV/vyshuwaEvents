@@ -6,31 +6,31 @@
    "width": "Half"
   },
   {
-   "chart": "total revenue of month",
+   "chart": "Event Summary",
    "width": "Half"
   },
   {
-   "chart": "Event ticket COunt",
-   "width": "Full"
-  },
-  {
-   "chart": "Event Count Ticket",
+   "chart": "Revenue Over TIme",
    "width": "Half"
   },
   {
-   "chart": "Event Total Revenue",
+   "chart": "Top Buyer",
    "width": "Half"
   },
   {
-   "chart": "Total Sales Per Event",
-   "width": "Full"
-  },
-  {
-   "chart": "Paid Booking",
+   "chart": "Payment Status Summary",
    "width": "Half"
   },
   {
-   "chart": "month sold ticket",
+   "chart": "Event Sales In Date Range",
+   "width": "Half"
+  },
+  {
+   "chart": "Day month Query",
+   "width": "Half"
+  },
+  {
+   "chart": "Sold per Event",
    "width": "Half"
   }
  ],
@@ -41,7 +41,7 @@
  "idx": 1,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2025-10-09 12:06:11.064258",
+ "modified": "2025-10-10 19:58:23.127508",
  "modified_by": "Administrator",
  "module": "Vyshuwaops",
  "name": "vyshuwa",

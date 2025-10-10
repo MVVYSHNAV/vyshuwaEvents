@@ -1,0 +1,34 @@
+{
+ "chart_name": "Top Buyer",
+ "chart_type": "Report",
+ "creation": "2025-10-10 19:14:32.882225",
+ "currency": "INR",
+ "custom_options": "{\n  \"x_field\": \"user\",\n  \"chart_type\": \"Bar\",\n  \"y_axis_fields\": [\n    {\n      \"y_field\": \"tickets_purchased\",\n      \"name\": \"Tickets Purchased\",\n      \"color\": \"#3B82F6\",\n      \"bar_width\": 20,\n      \"show_values\": true,\n      \"value_color\": \"#1E293B\",\n      \"value_font_size\": 12\n    }\n  ],\n  \"y_fields\": [\"tickets_purchased\"],\n  \"colors\": [\"#3B82F6\"],\n  \"axis_options\": {\n    \"x_axis_label\": \"User\",\n    \"y_axis_label\": \"Tickets Purchased\",\n    \"x_axis_rotate\": 45,\n    \"shorten_numbers\": true\n  },\n  \"tooltip_options\": {\n    \"background_color\": \"#1E293B\",\n    \"text_color\": \"#F8FAFC\",\n    \"border_radius\": 6,\n    \"shadow\": true,\n    \"format_tooltip_y\": \"function(y) { return y; }\"\n  },\n  \"legend\": {\n    \"position\": \"top\",\n    \"align\": \"center\",\n    \"label_color\": \"#475569\"\n  },\n  \"grid\": {\n    \"visible\": true,\n    \"color\": \"#E2E8F0\"\n  },\n  \"max_rows\": 10\n}\n",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-10-10 19:16:55.868923",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Top Buyer",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Top Buyers",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "user",
+ "y_axis": [
+  {
+   "y_field": "tickets_purchased"
+  }
+ ]
+}
