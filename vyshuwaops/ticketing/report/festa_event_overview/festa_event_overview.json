@@ -14,19 +14,27 @@
    "mandatory": 0,
    "options": "Festa Event",
    "wildcard_filter": 0
+  },
+  {
+   "fieldname": "booking",
+   "fieldtype": "Link",
+   "label": "Booking",
+   "mandatory": 0,
+   "options": "Festa Ticket",
+   "wildcard_filter": 0
   }
  ],
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2025-09-25 23:35:46.528412",
+ "modified": "2025-10-10 19:56:28.503755",
  "modified_by": "Administrator",
  "module": "Ticketing",
  "name": "Festa Event Overview",
  "owner": "Administrator",
  "prepared_report": 0,
- "query": "SELECT * FROM `tabFesta_Booking`",
- "ref_doctype": "Festa Booking",
+ "query": "SELECT\n    t.name AS \"Ticket ID:Link/Festa Ticket:120\",\n    t.attende_name AS \"Attendee Name:Data:150\",\n    t.event AS \"Event:Link/Festa Event:150\",\n    t.booking AS \"Booking ID:Link/Festa Booking:120\",\n    t.ticket_type AS \"Ticket Type:Data:100\",\n    t.price AS \"Price:Currency:100\",\n    t.venue AS \"Venue:Data:150\",\n    t.creation AS \"Booked On:Datetime:150\",\n    t.qr_code AS \"QR Code:Attach:150\",\n    CASE \n        WHEN t.docstatus = 0 THEN 'Draft'\n        WHEN t.docstatus = 1 THEN 'Submitted'\n        WHEN t.docstatus = 2 THEN 'Cancelled'\n        ELSE 'Unknown'\n    END AS \"Status:Data:100\"\nFROM `tabFesta Ticket` t\n",
+ "ref_doctype": "Festa Ticket",
  "report_name": "Festa Event Overview",
  "report_type": "Query Report",
  "roles": [

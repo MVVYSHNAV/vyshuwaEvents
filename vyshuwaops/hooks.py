@@ -31,6 +31,39 @@ doc_events = {
 
 }
 
+app_include_hooks = {
+    "submit_festa_booking": "vyshuwaops.api.api.submit_festa_booking"
+}
+
+web_methods = {
+    # Razorpay sends a POST request with the webhook payload
+    "POST": {
+        # The key is the URL path segment, the value is the full function path
+        "razorpay_webhook": "vyshuwaops.api.api.razorpay_webhook"
+}
+}
+
+
+permission_query_conditions = {
+    "Festa Event": "vyshuwaops.api.permission.get_festa_event_conditions",
+    "Festa Booking": "vyshuwaops.api.permission.get_festa_booking_conditions",
+}
+
+has_permission = {
+    "Festa Event": "vyshuwaops.api.permission.has_permission",
+    "Festa Booking": "vyshuwaops.api.permission.has_permission",
+}
+
+# app_include_js = [
+#     "/assets/vyshuwaops/js/custom_webform_script.js"
+# ]
+
+# doctype_js = {
+#     "Web Form": "public/js/web_form_custom.js"
+# }
+
+
+
 
 
 # override_whitelisted_methods = {
@@ -41,16 +74,8 @@ doc_events = {
 #     "vyshuwaops.vyshuwaops.api.signup.register_user": "vyshuwaops.vyshuwaops.api.signup.register_user"
 # }
 
-# hooks.py
-# permission_query_conditions = {
-#     "Festa Event": "vyshuwaops.vyshuwaops.doctype.festa_event.festa_event.get_permission_query_conditions",
-#     "Festa Booking": "vyshuwaops.ticketing.doctype.festa_booking.festa_booking.get_permission_query_conditions",
-# }
 
-# has_permission = {
-#     "Festa Event": "vyshuwaops.vyshuwaops.doctype.festa_event.festa_event.has_permission",
-#     "Festa Booking": "vyshuwaops.ticketing.doctype.festa_booking.festa_booking.has_permission",
-# }
+
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [    

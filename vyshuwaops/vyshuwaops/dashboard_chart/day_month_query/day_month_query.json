@@ -1,0 +1,39 @@
+{
+ "chart_name": "Day month Query",
+ "chart_type": "Report",
+ "creation": "2025-10-10 19:29:06.815584",
+ "currency": "INR",
+ "custom_options": "{\n  \"x_field\": \"date\",\n  \"chart_type\": \"Pie\",\n  \"y_axis_fields\": [\n    {\n      \"y_field\": \"tickets_sold\",\n      \"name\": \"Tickets Sold\",\n      \"color_palette\": [\"#3B82F6\", \"#6366F1\", \"#60A5FA\", \"#2563EB\", \"#1D4ED8\"],\n      \"show_percentage\": true,\n      \"show_label\": true,\n      \"label_color\": \"#1E293B\",\n      \"label_font_size\": 12\n    },\n    {\n      \"y_field\": \"total_amount\",\n      \"name\": \"Total Revenue\",\n      \"color_palette\": [\"#F97316\", \"#FB923C\", \"#EA580C\", \"#F59E0B\", \"#B45309\"],\n      \"show_percentage\": true,\n      \"show_label\": true,\n      \"label_color\": \"#1E293B\",\n      \"label_font_size\": 12\n    }\n  ],\n  \"y_fields\": [\"tickets_sold\", \"total_amount\"],\n  \"tooltip_options\": {\n    \"background_color\": \"#1E293B\",\n    \"text_color\": \"#F8FAFC\",\n    \"border_radius\": 8,\n    \"shadow\": true,\n    \"format_tooltip\": \"function(value, field) { return field === 'tickets_sold' ? value + ' tickets' : '\u20b9' + value; }\"\n  },\n  \"legend\": {\n    \"position\": \"right\",\n    \"align\": \"center\",\n    \"label_color\": \"#475569\",\n    \"font_size\": 13\n  },\n  \"donut\": false,\n  \"show_total\": true\n}\n",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-10-10 19:30:43.435219",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Day month Query",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Combined Chart Query",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Pie",
+ "use_report_chart": 0,
+ "x_field": "date",
+ "y_axis": [
+  {
+   "color": "#761ACB",
+   "y_field": "tickets_sold"
+  },
+  {
+   "color": "#ECAD4B",
+   "y_field": "total_amount"
+  }
+ ]
+}

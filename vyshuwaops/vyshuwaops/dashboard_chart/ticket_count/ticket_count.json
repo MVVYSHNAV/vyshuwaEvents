@@ -1,0 +1,39 @@
+{
+ "chart_name": "Ticket Count",
+ "chart_type": "Report",
+ "creation": "2025-10-10 18:50:59.333913",
+ "currency": "INR",
+ "custom_options": "{\n  \"chart_name\": \"Festa Booking Trends\",\n  \"chart_type\": \"Line\",\n  \"x_field\": \"event\",\n  \"y_axis_fields\": [\n    {\n      \"idx\": 1,\n      \"y_field\": \"tickets_sold\",\n      \"color\": \"#00C49F\",\n      \"name\": \"Tickets Sold\"\n    },\n    {\n      \"idx\": 2,\n      \"y_field\": \"total_amount\",\n      \"color\": \"#0088FE\",\n      \"name\": \"Total Revenue\"\n    }\n  ],\n  \"y_fields\": [\"tickets_sold\", \"total_amount\"],\n  \"colors\": [\"#00C49F\", \"#0088FE\"],\n  \"line_options\": {\n    \"region_fill\": 1,\n    \"hide_dots\": 0,\n    \"heatline\": 0,\n    \"smooth\": 1\n  },\n  \"tooltip_options\": {\n    \"format_tooltip_x\": \"function (x) { return x; }\",\n    \"format_tooltip_y\": \"function (y) { return '\u20b9' + y.toLocaleString(); }\"\n  },\n  \"axis_options\": {\n    \"x_axis_mode\": \"tick\",\n    \"y_axis_mode\": \"span\",\n    \"shorten_numbers\": 1\n  },\n  \"grid_options\": {\n    \"x_lines\": 1,\n    \"y_lines\": 1\n  },\n  \"max_rows\": 20,\n  \"is_public\": 0,\n  \"is_custom\": 1\n}\n",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{\"event\":\"International Conference on Psychology and Behavioural Sciences\",\"payment_status\":\"Paid\",\"from_date\":\"2025-09-10\",\"to_date\":\"2025-10-09\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-10-10 18:54:59.079663",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Ticket Count",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Festa Booking Test",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "event",
+ "y_axis": [
+  {
+   "color": "#ECAD4B",
+   "y_field": "tickets_sold"
+  },
+  {
+   "color": "#ED6396",
+   "y_field": "total_amount"
+  }
+ ]
+}

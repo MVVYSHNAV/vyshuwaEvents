@@ -1,0 +1,80 @@
+{
+ "add_total_row": 0,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2025-10-10 15:05:42.512596",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [
+  {
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "label": "Event",
+   "mandatory": 0,
+   "options": "Festa Event",
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "mandatory": 0,
+   "options": "Paid\nFailed\nPending",
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "mandatory": 0,
+   "options": "User",
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "creation_from",
+   "fieldtype": "Date",
+   "label": "Booking Date From",
+   "mandatory": 0,
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "creation_to",
+   "fieldtype": "Date",
+   "label": "Booking Date To",
+   "mandatory": 0,
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2025-10-10 16:29:03.662261",
+ "modified_by": "Administrator",
+ "module": "Ticketing",
+ "name": "Festa Booking",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT\n    b.name AS \"Booking ID:Link/Festa Booking:120\",\n    b.event AS \"Event:Link/Festa Event:150\",\n    b.user AS \"Customer:Link/User:150\",\n    b.payment_status AS \"Payment Status:Data:120\",\n    ROUND(b.total_amount, 2) AS \"Total Amount:Currency:120\",\n    b.currency AS \"Currency:Data:80\",\n    b.qr_code_url AS \"QR Code:Data:200\",\n    b.creation AS \"Booking Date:Datetime:150\",\n    GROUP_CONCAT(a.full_name SEPARATOR ', ') AS \"Attendees:Data:250\"\nFROM\n    `tabFesta Booking` b\nLEFT JOIN\n    `tabFesta Attende Booking` a \n    ON a.parent = b.name\nWHERE\n    (%(event)s IS NULL OR %(event)s = '' OR b.event = %(event)s)\n    AND (%(payment_status)s IS NULL OR %(payment_status)s = '' OR b.payment_status = %(payment_status)s)\n    AND (%(user)s IS NULL OR %(user)s = '' OR b.user = %(user)s)\n    AND (%(creation_from)s IS NULL OR %(creation_from)s = '' OR DATE(b.creation) >= %(creation_from)s)\n    AND (%(creation_to)s IS NULL OR %(creation_to)s = '' OR DATE(b.creation) <= %(creation_to)s)\nGROUP BY\n    b.name, b.event, b.user, b.payment_status, b.total_amount, b.currency, b.qr_code_url, b.creation\nORDER BY\n    b.creation DESC;\n",
+ "ref_doctype": "Festa Booking",
+ "report_name": "Festa Booking",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "Admin"
+  },
+  {
+   "role": "Organizer"
+  },
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Attendee"
+  },
+  {
+   "role": "Guest"
+  }
+ ],
+ "timeout": 0
+}

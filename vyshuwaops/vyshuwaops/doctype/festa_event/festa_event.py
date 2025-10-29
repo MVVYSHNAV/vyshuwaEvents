@@ -22,7 +22,7 @@ class FestaEvent(WebsiteGenerator):
 		end_date: DF.Date | None
 		end_time: DF.Time | None
 		host: DF.Link | None
-		organizer: DF.Link | None  # Add this field - Link to User
+		organiser: DF.Link | None  # Add this field - Link to User
 		is_published: DF.Check
 		payment_gateway: DF.Link | None
 		route: DF.Data | None
@@ -40,9 +40,9 @@ class FestaEvent(WebsiteGenerator):
 	})
 	
 	def before_save(self):
-		"""Set organizer to current user if creating new event"""
-		if self.is_new() and not self.organizer:
-			self.organizer = frappe.session.user
+		"""Set organiser to current user if creating new event"""
+		if self.is_new() and not self.organiser:
+			self.organiser = frappe.session.user
 	
 	def validate(self):
 		"""Validate event data"""
@@ -59,10 +59,10 @@ class FestaEvent(WebsiteGenerator):
 		if "Admin" in frappe.get_roles(user) or "System Manager" in frappe.get_roles(user):
 			return True
 		
-		# Organizers can only access their own events
-		if "Organizer" in frappe.get_roles(user):
+		# organisers can only access their own events
+		if "Organiser" in frappe.get_roles(user):
 			if ptype in ["read", "write", "delete"]:
-				return self.organizer == user
+				return self.organiser == user
 			if ptype == "create":
 				return True
 		
@@ -203,9 +203,9 @@ def get_permission_query_conditions(user):
 	if "Admin" in frappe.get_roles(user) or "System Manager" in frappe.get_roles(user):
 		return None
 	
-	# Organizers see only their events
-	if "Organizer" in frappe.get_roles(user):
-		return f"""(`tabFesta Event`.organizer = {frappe.db.escape(user)})"""
+	# organisers see only their events
+	if "organiser" in frappe.get_roles(user):
+		return f"""(`tabFesta Event`.organiser = {frappe.db.escape(user)})"""
 	
 	# Attendees see only published events
 	if "Attendee" in frappe.get_roles(user):
@@ -224,10 +224,10 @@ def has_permission(doc, ptype, user):
 	if "Admin" in frappe.get_roles(user) or "System Manager" in frappe.get_roles(user):
 		return True
 	
-	# Organizers can only access their own events
-	if "Organizer" in frappe.get_roles(user):
+	# organisers can only access their own events
+	if "organiser" in frappe.get_roles(user):
 		if ptype in ["read", "write", "delete"]:
-			return doc.organizer == user
+			return doc.organiser == user
 		if ptype == "create":
 			return True
 	

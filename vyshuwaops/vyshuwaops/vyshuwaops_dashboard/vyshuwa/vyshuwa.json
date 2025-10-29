@@ -1,0 +1,49 @@
+{
+ "cards": [],
+ "charts": [
+  {
+   "chart": "Profit and Loss",
+   "width": "Half"
+  },
+  {
+   "chart": "Event Summary",
+   "width": "Half"
+  },
+  {
+   "chart": "Revenue Over TIme",
+   "width": "Half"
+  },
+  {
+   "chart": "Top Buyer",
+   "width": "Half"
+  },
+  {
+   "chart": "Payment Status Summary",
+   "width": "Half"
+  },
+  {
+   "chart": "Event Sales In Date Range",
+   "width": "Half"
+  },
+  {
+   "chart": "Day month Query",
+   "width": "Half"
+  },
+  {
+   "chart": "Sold per Event",
+   "width": "Half"
+  }
+ ],
+ "creation": "2025-10-07 19:24:56.094932",
+ "dashboard_name": "vyshuwa",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 1,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2025-10-10 19:58:23.127508",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "vyshuwa",
+ "owner": "Administrator"
+}

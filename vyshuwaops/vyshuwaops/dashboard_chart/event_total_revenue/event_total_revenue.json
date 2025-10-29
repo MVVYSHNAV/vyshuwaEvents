@@ -1,0 +1,35 @@
+{
+ "chart_name": "Event Total Revenue",
+ "chart_type": "Report",
+ "creation": "2025-10-08 17:50:24.131759",
+ "currency": "INR",
+ "custom_options": "{\"x_field\": \"event\", \"chart_type\": \"Bar\", \"y_axis_fields\": [{\"idx\": 1, \"__islocal\": true, \"y_field\": \"total_revenue\", \"color\": \"#449CF0\", \"name\": \"row 1\"}], \"y_fields\": [\"total_revenue\"], \"colors\": [\"#449CF0\"]}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-10-08 17:50:24.156133",
+ "modified_by": "Administrator",
+ "module": "Vyshuwaops",
+ "name": "Event Total Revenue",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Total Revenue per Event",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "event",
+ "y_axis": [
+  {
+   "color": "#449CF0",
+   "y_field": "total_revenue"
+  }
+ ]
+}
